@@ -19,6 +19,10 @@ body {
   @apply font-medium text-lg lg:text-2xl;
 }
 
+[disabled] {
+  @apply !bg-gray-300 pointer-events-none;
+}
+
 .btn {
   @apply px-2 py-3 rounded-full transitable;
 }

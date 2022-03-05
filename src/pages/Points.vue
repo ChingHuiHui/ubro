@@ -2,7 +2,6 @@
   <div class="flex flex-col flex-center">
     <div class="min-w-[640px] w-3/4">
       <PointCards :points="points" class="mb-5" />
-
       <div
         class="bg-white rounded-2xl p-4 w-[20rem] flex justify-between space-x-4"
       >
@@ -18,6 +17,7 @@
         <button
           class="btn btn-primary stamp-button"
           @click="modalIsOpen = true"
+          :disabled="number === 0"
         >
           <HuiIcon icon="stamp" />
         </button>
