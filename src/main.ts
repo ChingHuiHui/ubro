@@ -25,6 +25,7 @@ import StoragePlugin from '@/plugins/storage'
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/pages/Home.vue'
 import Points from '@/pages/Points.vue'
+import Exchange from '@/pages/Exchange.vue'
 
 import './assets/styles/index.css'
 
@@ -72,6 +73,7 @@ const i18n = createI18n({
 const routes = [
   { path: '/', component: Home },
   { path: '/points', component: Points },
+  { path: '/exchange', component: Exchange },
 ]
 
 const router = createRouter({
