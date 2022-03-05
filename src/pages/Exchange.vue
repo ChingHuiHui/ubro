@@ -19,12 +19,12 @@
             <span
               class="border-b-2 border-b-primary pb-0.5 text-xl font-medium"
             >
-              {{ chooseProduct ? chooseProduct.name : '尚未兌換任何商品' }}
+              {{ chosenProduct ? chosenProduct.name : '尚未兌換任何商品' }}
             </span>
             <span>
               使用
               <span class="font-medium text-lg">
-                {{ chooseProduct ? chooseProduct.point : 0 }}
+                {{ chosenProduct ? chosenProduct.point : 0 }}
               </span>
               點
             </span>
@@ -85,16 +85,16 @@
     active.value = active.value === id ? null : id
   }
 
-  const chooseProduct = computed((): Product | undefined => {
-    if (!Array.isArray(products)) {
+  const chosenProduct = computed((): Product | undefined => {
+    if (!Array.isArray(products.value)) {
       return
     }
 
-    return products.find(({ id }) => id === active.value)
+    return products.value.find(({ id }) => id === active.value)
   })
 
   const currentPoint = computed((): number => {
-    const cost = chooseProduct.value?.point || 0
+    const cost = chosenProduct.value?.point || 0
 
     return 20 - cost
   })
