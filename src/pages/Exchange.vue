@@ -37,7 +37,15 @@
             確認兌換
           </button>
         </div>
-        <ProductList :products="products" @change="choose" :active="active" />
+        <div v-if="loading" class="flex-center mt-10 font-medium">
+          正在努力尋找有什麼可以兌換的好東西 ...
+        </div>
+        <ProductList
+          v-else
+          :products="products"
+          @change="choose"
+          :active="active"
+        />
       </div>
     </div>
     <ExchangeModal v-if="modalIsOpen" @close="modalIsOpen = false" />
@@ -46,41 +54,42 @@
 
 <script lang="ts" setup>
   import { computed, ref } from 'vue'
+  import { useQuery, useResult } from '@vue/apollo-composable'
+  import gql from 'graphql-tag'
+
   import ProductList from '../components/ProductList.vue'
   import ExchangeModal from '../components/ExchangeModal.vue'
 
   type Product = {
-    id: string
+    id: number
     name: string
     point: number
   }
 
-  // TODO: get products from api
-  const products: Product[] = [
-    { id: '1', name: '拿鐵', point: 10 },
-    { id: '2', name: '手沖咖啡', point: 15 },
-    { id: '3', name: '茶飲', point: 10 },
-    { id: '4', name: '貝果', point: 5 },
-    { id: '5', name: '吐司', point: 5 },
-    { id: '6', name: '拿鐵', point: 10 },
-    { id: '7', name: '手沖咖啡', point: 15 },
-    { id: '8', name: '茶飲', point: 10 },
-    { id: '9', name: '貝果', point: 5 },
-    { id: '10', name: '吐司', point: 5 },
-    { id: '11', name: '手沖咖啡', point: 15 },
-    { id: '12', name: '茶飲', point: 10 },
-    { id: '13', name: '貝果', point: 5 },
-    { id: '14', name: '吐司', point: 5 },
-  ]
+  const { result, loading } = useQuery(gql`
+    query {
+      products {
+        id
+        name
+        point
+      }
+    }
+  `)
+
+  const products = useResult(result, null, (data): Product[] => data.products)
 
   const modalIsOpen = ref(false)
-  const active = ref<string | null>(null)
+  const active = ref<number | null>(null)
 
-  const choose = (id: string) => {
+  const choose = (id: number) => {
     active.value = active.value === id ? null : id
   }
 
   const chooseProduct = computed((): Product | undefined => {
+    if (!Array.isArray(products)) {
+      return
+    }
+
     return products.find(({ id }) => id === active.value)
   })
 

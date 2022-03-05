@@ -29,16 +29,17 @@
 
 <script lang="ts" setup>
   import HuiIcon from '@/components/HuiIcon.vue'
+  import { readonly } from 'vue'
 
   type Product = {
-    id: string
+    id: number
     name: string
     point: number
   }
 
   defineProps<{
-    products: Product[]
-    active: string | null
+    products: readonly Product[] | null
+    active: number | null
   }>()
 
   const emits = defineEmits(['change'])
