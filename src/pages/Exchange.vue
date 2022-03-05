@@ -29,21 +29,25 @@
               點
             </span>
           </div>
-          <button class="btn btn-primary w-40">確認兌換</button>
+          <button
+            :disabled="!active"
+            class="btn btn-primary w-40"
+            @click="modalIsOpen = true"
+          >
+            確認兌換
+          </button>
         </div>
-        <ProductList
-          :products="products"
-          @change="active = $event"
-          :active="active"
-        />
+        <ProductList :products="products" @change="choose" :active="active" />
       </div>
     </div>
+    <ExchangeModal v-if="modalIsOpen" @close="modalIsOpen = false" />
   </div>
 </template>
 
 <script lang="ts" setup>
   import { computed, ref } from 'vue'
   import ProductList from '../components/ProductList.vue'
+  import ExchangeModal from '../components/ExchangeModal.vue'
 
   type Product = {
     id: string
@@ -69,7 +73,12 @@
     { id: '14', name: '吐司', point: 5 },
   ]
 
+  const modalIsOpen = ref(false)
   const active = ref<string | null>(null)
+
+  const choose = (id: string) => {
+    active.value = active.value === id ? null : id
+  }
 
   const chooseProduct = computed((): Product | undefined => {
     return products.find(({ id }) => id === active.value)

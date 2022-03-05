@@ -42,3 +42,11 @@ body {
     @apply bg-primary-dark;
   }
 }
+
+.btn-outline-primary {
+  @apply border border-primary text-primary;
+
+  &:hover {
+    @apply bg-primary text-white;
+  }
+}
