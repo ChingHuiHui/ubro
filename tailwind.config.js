@@ -14,7 +14,14 @@ module.exports = {
         md: '1.5rem',
       },
     },
-    extend: {},
+    extend: {
+      colors: {
+        primary: {
+          light: '#96846c',
+          DEFAULT: '#736552',
+        },
+      },
+    },
   },
   plugins: [helpers],
 }
