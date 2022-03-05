@@ -32,10 +32,11 @@
 </template>
 
 <script setup lang="ts">
+  import { ref } from 'vue'
+
   import PointCards from '@/components/PointCards.vue'
   import HuiIcon from '@/components/HuiIcon.vue'
-  import { ref } from 'vue'
-  import ConfrimedModal from '../components/ConfrimedModal.vue'
+  import ConfrimedModal from '../components/Modal/ConfrimedModal.vue'
 
   // TODO: correct points from api
   const points = 22

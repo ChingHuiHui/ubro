@@ -57,8 +57,8 @@
   import { useQuery, useResult } from '@vue/apollo-composable'
   import gql from 'graphql-tag'
 
-  import ProductList from '../components/ProductList.vue'
-  import ExchangeModal from '../components/ExchangeModal.vue'
+  import ProductList from '@/components/ProductList.vue'
+  import ExchangeModal from '@/components/Modal/ExchangeModal.vue'
 
   type Product = {
     id: number

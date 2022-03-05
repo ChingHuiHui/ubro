@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
   import { ref, computed } from 'vue'
-  import Modal from './Modal.vue'
+  import Modal from '@/components/Modal.vue'
 
   const props = defineProps<{ number: number }>()
   const emits = defineEmits(['close'])
