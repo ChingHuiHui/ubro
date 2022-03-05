@@ -1,9 +1,9 @@
 <template>
   <div class="h-screen flex">
     <DefaultSideBar />
-    <div class="bg-gray-300 flex-1 pt-10 px-10 overflow-x-hidden">
+    <main class="flex-1 pt-20 px-10 overflow-x-hidden">
       <router-view></router-view>
-    </div>
+    </main>
   </div>
 </template>
 

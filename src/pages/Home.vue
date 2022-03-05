@@ -1,7 +1,7 @@
 <template>
-  <div class="flex-center flex-col">
+  <div class="flex flex-col items-center">
     <h2 class="h1 text-center mb-5">LOGIN</h2>
-    <div class="min-w-[640px] w-3/4">
+    <div class="wrapper">
       <div class="phone-input flex items-center">
         <input
           v-model="phone"

@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col flex-center">
-    <div class="min-w-[640px] w-3/4">
+    <div class="wrapper">
       <PointCards :points="points" class="mb-5" />
       <div
         class="bg-white rounded-2xl p-4 w-[20rem] flex justify-between space-x-4"

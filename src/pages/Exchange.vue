@@ -1,37 +1,39 @@
 <template>
-  <div class="flex flex-col h-full space-y-4">
-    <div class="flex-center">
-      <div class="h1 !font-normal bg-primary-light inline-block p-2">
-        目前有<span class="text-white font-bold"> 20 </span>點
+  <div class="flex-center h-full">
+    <div class="wrapper flex flex-col h-full">
+      <div class="flex-center mb-4">
+        <div class="h1 !font-normal bg-primary-light inline-block p-2">
+          目前有<span class="text-white font-bold"> 20 </span>點
+        </div>
       </div>
-    </div>
-    <div class="flex-1 bg-white overflow-y-scroll p-6 rounded-t-2xl">
-      <ul class="product-table">
-        <li class="product-row p-2 text-gray-800">
-          <div>
-            <span>兌換</span>
-            <span>品項</span>
-            <span>點數</span>
-          </div>
-        </li>
-        <li
-          @click="choose = product.id"
-          v-for="product in products"
-          :key="product.id"
-          class="product-row cursor-pointer"
-          :class="{ active: choose === product.id }"
-        >
-          <div>
-            <span>
-              <div class="check">
-                <HuiIcon icon="check" />
-              </div>
-            </span>
-            <span>{{ product.name }}</span>
-            <span>{{ product.point }}</span>
-          </div>
-        </li>
-      </ul>
+      <div class="flex-1 bg-white overflow-y-scroll p-6 rounded-t-2xl">
+        <ul class="product-table">
+          <li class="product-row p-2 text-gray-800">
+            <div>
+              <span>兌換</span>
+              <span>品項</span>
+              <span>點數</span>
+            </div>
+          </li>
+          <li
+            @click="choose = product.id"
+            v-for="product in products"
+            :key="product.id"
+            class="product-row cursor-pointer"
+            :class="{ active: choose === product.id }"
+          >
+            <div>
+              <span>
+                <div class="check">
+                  <HuiIcon icon="check" />
+                </div>
+              </span>
+              <span>{{ product.name }}</span>
+              <span>{{ product.point }}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>

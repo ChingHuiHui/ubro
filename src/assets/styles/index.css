@@ -2,13 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+[disabled] {
+  @apply !bg-gray-300 pointer-events-none;
+}
+
 html,
 body {
   @apply text-gray-800 text-sm lg:text-base;
 }
 
 #app {
-  @apply bg-white;
+  @apply bg-gray-300;
+}
+
+.wrapper {
+  @apply min-w-[640px] w-3/4;
 }
 
 .h1 {
@@ -17,10 +25,6 @@ body {
 
 .h2 {
   @apply font-medium text-lg lg:text-2xl;
-}
-
-[disabled] {
-  @apply !bg-gray-300 pointer-events-none;
 }
 
 .btn {
