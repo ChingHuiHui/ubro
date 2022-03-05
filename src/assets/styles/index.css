@@ -18,3 +18,19 @@ body {
 .h2 {
   @apply font-medium text-lg lg:text-2xl;
 }
+
+.btn {
+  @apply px-2 py-3 rounded-full transitable;
+}
+
+.btn-block {
+  @apply w-full;
+}
+
+.btn-primary {
+  @apply bg-primary text-white;
+
+  &:hover {
+    @apply bg-primary-dark;
+  }
+}

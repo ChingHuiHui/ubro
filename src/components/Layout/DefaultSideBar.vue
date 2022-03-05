@@ -10,11 +10,7 @@
         </li>
         <li class="mt-auto">
           <!-- TODO: for logout -->
-          <button
-            class="px-2 py-3 bg-primary text-white rounded-full w-40 transitable hover:bg-primary-dark"
-          >
-            完成
-          </button>
+          <button class="btn btn-primary w-40">完成</button>
         </li>
       </ul>
     </nav>

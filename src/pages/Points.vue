@@ -7,15 +7,18 @@
         class="bg-white rounded-2xl p-4 w-[20rem] flex justify-between space-x-4"
       >
         <div class="flex-1 flex items-center space-x-6">
-          <button @click="minusNumber" class="control-button btn-rounded">
+          <button @click="minusNumber" class="btn control-button">
             <HuiIcon icon="minus" />
           </button>
           <div class="flex-1 text-center font-bold text-lg">{{ number }}</div>
-          <button @click="addNumber" class="control-button btn-rounded">
+          <button @click="addNumber" class="btn control-button">
             <HuiIcon icon="plus" />
           </button>
         </div>
-        <button class="stamp-button btn-rounded" @click="modalIsOpen = true">
+        <button
+          class="btn btn-primary stamp-button"
+          @click="modalIsOpen = true"
+        >
           <HuiIcon icon="stamp" />
         </button>
       </div>
@@ -55,14 +58,10 @@
 </script>
 
 <style scoped>
-  .btn-rounded {
-    @apply rounded-full;
-  }
-
   .control-button {
-    @apply w-14 h-14 text-lg transitable bg-white hover:drop-shadow;
+    @apply w-14 h-14 text-lg bg-white hover:drop-shadow;
   }
   .stamp-button {
-    @apply w-20 h-20 text-2xl bg-primary-light text-white transitable hover:drop-shadow-lg hover:bg-primary-dark;
+    @apply w-20 h-20 text-2xl hover:drop-shadow-lg;
   }
 </style>

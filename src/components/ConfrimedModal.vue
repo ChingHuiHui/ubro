@@ -22,7 +22,7 @@
       </div>
       <button
         :disabled="code === ''"
-        class="bg-primary px-2 py-3 text-white rounded-full transitable w-full hover:bg-primary-dark"
+        class="btn btn-primary btn-block"
         :class="{ 'bg-gray-300 pointer-events-none': code === '' }"
         @click="submit"
       >
