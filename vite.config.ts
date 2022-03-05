@@ -4,7 +4,7 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/hui-vue-base/',
+  base: '/ubro/',
   plugins: [vue()],
   resolve: {
     alias: {
