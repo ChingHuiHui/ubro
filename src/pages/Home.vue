@@ -1,8 +1,14 @@
 <template>
-  <div class="flex-center h-full w-full">
+  <div class="flex-center flex-col">
+    <h2 class="h1 text-center mb-5">LOGIN</h2>
     <div class="min-w-[640px] w-3/4">
       <div class="phone-input flex items-center">
-        <input v-model="phone" maxlength="10" class="flex-1" />
+        <input
+          v-model="phone"
+          maxlength="10"
+          class="flex-1 outline-none"
+          readonly
+        />
         <div
           v-if="isValid"
           class="w-10 h-10 flex-center rounded-full border border-green-500 text-green-500"
@@ -37,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref } from 'vue'
+  import { computed, onMounted, ref } from 'vue'
   import HuiIcon from '@/components/HuiIcon.vue'
 
   const REMOVE_NUMBER = 10
@@ -52,8 +58,8 @@
     return /((?=(09))[0-9]{10})$/g.test(phone.value)
   })
 
-  const handleClick = (number: number) => {
-    let addNumber = number
+  const handleClick = (number: number | string) => {
+    let addNumber = String(number)
 
     if (number === REMOVE_NUMBER) {
       phone.value = phone.value.slice(0, -1)
@@ -67,7 +73,7 @@
     }
 
     if (number === ZERO_NUMBER) {
-      addNumber = 0
+      addNumber = '0'
     }
 
     if (phone.value.length >= MAX_LENGTH) {
@@ -76,6 +82,26 @@
 
     phone.value += addNumber
   }
+
+  const BACKSPACE_CODE = 8
+
+  onMounted(() => {
+    const numbers = [...Array(10)].map((_, i) => `${i}`)
+
+    document.addEventListener('keyup', ({ key, keyCode }) => {
+      if (
+        ((keyCode >= 48 && keyCode <= 57) ||
+          (keyCode >= 96 && keyCode <= 105)) &&
+        numbers.includes(key)
+      ) {
+        handleClick(key)
+      }
+
+      if (keyCode === BACKSPACE_CODE) {
+        handleClick(REMOVE_NUMBER)
+      }
+    })
+  })
 </script>
 
 <style scoped>
