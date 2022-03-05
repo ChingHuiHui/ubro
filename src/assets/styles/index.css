@@ -4,7 +4,7 @@
 
 html,
 body {
-  @apply text-gray-800;
+  @apply text-gray-800 text-sm lg:text-base;
 }
 
 #app {
