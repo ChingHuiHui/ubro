@@ -26,6 +26,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/pages/Home.vue'
 import Points from '@/pages/Points.vue'
 import Exchange from '@/pages/Exchange.vue'
+import AdminLogin from '@/pages/Admin/Login.vue'
 
 import './assets/styles/index.css'
 
@@ -74,6 +75,7 @@ const routes = [
   { path: '/', component: Home },
   { path: '/points', component: Points },
   { path: '/exchange', component: Exchange },
+  { path: '/admin/login', name: 'admin-login', component: AdminLogin },
 ]
 
 const router = createRouter({

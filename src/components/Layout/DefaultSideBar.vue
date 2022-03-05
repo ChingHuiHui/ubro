@@ -9,6 +9,11 @@
           <router-link :to="to">{{ label }}</router-link>
         </li>
         <li class="mt-auto">
+          <router-link to="/admin/login">
+            <button class="btn btn-primary w-40">管理者</button>
+          </router-link>
+        </li>
+        <li>
           <!-- TODO: for logout -->
           <button class="btn btn-primary w-40">完成</button>
         </li>
