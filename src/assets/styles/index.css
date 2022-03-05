@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  @apply text-black dark:text-white;
+}
+
+#app {
+  @apply bg-white dark:bg-gray-800 transitable;
+}
+
+.h1 {
+  @apply font-bold text-xl lg:text-3xl;
+}
+
+.h2 {
+  @apply font-medium text-lg lg:text-2xl;
+}
+
+.link {
+  @apply transitable text-gray-500 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-500;
+}
