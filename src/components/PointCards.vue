@@ -1,5 +1,5 @@
 <template>
-  <section class="flex-center min-w-[640px] w-3/4">
+  <section class="flex-center">
     <swiper
       :effect="'cards'"
       :grabCursor="true"
