@@ -15,11 +15,16 @@
             <HuiIcon icon="plus" />
           </button>
         </div>
-        <button class="stamp-button btn-rounded">
+        <button class="stamp-button btn-rounded" @click="modalIsOpen = true">
           <HuiIcon icon="stamp" />
         </button>
       </div>
     </div>
+    <ConfrimedModal
+      v-if="modalIsOpen"
+      :number="number"
+      @close="modalIsOpen = false"
+    />
   </div>
 </template>
 
@@ -27,9 +32,12 @@
   import PointCards from '@/components/PointCards.vue'
   import HuiIcon from '@/components/HuiIcon.vue'
   import { ref } from 'vue'
+  import ConfrimedModal from '../components/ConfrimedModal.vue'
 
   // TODO: correct points from api
   const points = 22
+
+  const modalIsOpen = ref(false)
 
   const number = ref(0)
 
