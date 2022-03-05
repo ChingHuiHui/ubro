@@ -22,6 +22,10 @@ import { zh, en } from '@/lang'
 
 import StoragePlugin from '@/plugins/storage'
 
+import { createRouter, createWebHistory } from 'vue-router'
+import Home from '@/pages/Home.vue'
+import Points from '@/pages/Points.vue'
+
 import './assets/styles/index.css'
 
 // apollo
@@ -65,8 +69,19 @@ const i18n = createI18n({
   },
 })
 
+const routes = [
+  { path: '/', component: Home },
+  { path: '/points', component: Points },
+]
+
+const router = createRouter({
+  history: createWebHistory('ubro'),
+  routes,
+})
+
 app.use(StoragePlugin)
 app.use(pinia)
 app.use(i18n)
+app.use(router)
 
 app.mount('#app')

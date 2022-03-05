@@ -1,7 +1,12 @@
 <template>
-  <div class="min-h-screen flex flex-col">
-    <div>ubro</div>
+  <div class="h-screen flex">
+    <DefaultSideBar />
+    <div class="bg-gray-300 flex-1 p-10 overflow-x-hidden">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import DefaultSideBar from './components/Layout/DefaultSideBar.vue'
+</script>
