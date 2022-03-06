@@ -1,7 +1,10 @@
 <template>
   <div class="h-screen flex">
     <DefaultSideBar v-if="!isAdminLoginPage" />
-    <main class="flex-1 pt-16 px-10 overflow-x-hidden relative">
+    <main
+      class="flex-1 pt-16 px-10 overflow-x-hidden relative"
+      :class="{ 'bg-white': isAdminLoginPage }"
+    >
       <router-view></router-view>
     </main>
   </div>
