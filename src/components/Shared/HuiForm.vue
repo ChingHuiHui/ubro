@@ -8,13 +8,19 @@
   import { useForm } from 'vee-validate'
 
   const props = withDefaults(
-    defineProps<{ rules?: Object; action: Function }>(),
+    defineProps<{
+      rules?: Object
+      action: Function
+      initialValues?: Object
+    }>(),
     {
       rules: () => ({}),
+      initialValues: () => ({}),
     }
   )
 
   const { handleSubmit, meta, values } = useForm({
+    initialValues: props.initialValues,
     validationSchema: props.rules,
   })
 
