@@ -17,16 +17,28 @@
               修改
             </router-link>
           </span>
-          <span class="text-red-700 px-2 cursor-pointer">刪除</span>
+          <span
+            class="text-red-700 px-2 cursor-pointer"
+            @click="deleteProduct(product.id)"
+          >
+            刪除
+          </span>
         </div>
       </div>
     </li>
+    <DeleteModal
+      v-if="modelIsOpen"
+      @close="modelIsOpen = false"
+      :deleted-id="deletedId"
+    />
   </ul>
 </template>
 
 <script lang="ts" setup>
+  import { readonly, ref, nextTick } from 'vue'
+
+  import DeleteModal from '@/components/Modal/DeleteModal.vue'
   import HuiIcon from '@/components/HuiIcon.vue'
-  import { readonly } from 'vue'
 
   type Product = {
     id: number
@@ -37,6 +49,15 @@
   defineProps<{
     products: readonly Product[] | null
   }>()
+
+  const modelIsOpen = ref(false)
+  const deletedId = ref<number | null>(null)
+
+  const deleteProduct = (id: number) => {
+    deletedId.value = id
+
+    nextTick(() => (modelIsOpen.value = true))
+  }
 </script>
 
 <style scoped>
