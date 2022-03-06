@@ -27,6 +27,9 @@ import Home from '@/pages/Home.vue'
 import Points from '@/pages/Points.vue'
 import Exchange from '@/pages/Exchange.vue'
 import AdminLogin from '@/pages/Admin/Login.vue'
+import Products from '@/pages/products/index.vue'
+import CreateProducts from '@/pages/products/create.vue'
+import UpdateProducts from '@/pages/products/update.vue'
 
 import './assets/styles/index.css'
 
@@ -76,6 +79,9 @@ const routes = [
   { path: '/points', component: Points },
   { path: '/exchange', component: Exchange },
   { path: '/admin/login', name: 'admin-login', component: AdminLogin },
+  { path: '/products', component: Products },
+  { path: '/products/create', component: CreateProducts },
+  { path: '/products/:id/update', component: UpdateProducts },
 ]
 
 const router = createRouter({
