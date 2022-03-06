@@ -2,7 +2,7 @@
   <div class="container h-full flex lg:items-center">
     <div class="w-full grid lg:grid-cols-2 lg:gap-20">
       <HuiForm
-        v-slot="{ invalid, values }"
+        v-slot="{ values }"
         :rules="rules"
         :action="submit"
         class="space-y-6"
@@ -34,13 +34,14 @@
 
   import HuiForm from '@/components/Shared/HuiForm.vue'
   import HuiInput from '@/components/Shared/HuiInput.vue'
+  import { string } from 'yup/lib/locale'
 
   const rules = yup.object({
     account: yup.string().required(),
     password: yup.string().required().min(8),
   })
 
-  const submit = (values) => {
+  const submit = (values: { account: string; password: string }) => {
     // TODO: login
     console.log('login', values)
   }
