@@ -50,3 +50,11 @@ body {
     @apply bg-primary text-white;
   }
 }
+
+.form-input {
+  @apply border p-3 rounded-lg w-full bg-white outline-none;
+
+  &:focus {
+    @apply border-primary;
+  }
+}
