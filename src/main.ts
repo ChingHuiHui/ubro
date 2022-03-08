@@ -1,12 +1,8 @@
 import { createApp, provide, h } from 'vue'
 import App from './App.vue'
 
-import {
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache,
-} from '@apollo/client/core'
 import { DefaultApolloClient } from '@vue/apollo-composable'
+import apolloClient from '@/plugins/apolloClient'
 
 import { createPinia } from 'pinia'
 
@@ -32,17 +28,6 @@ import CreateProduct from '@/pages/products/create.vue'
 import UpdateProduct from '@/pages/products/update.vue'
 
 import './assets/styles/index.css'
-
-// apollo
-const cache = new InMemoryCache()
-const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_GRAPHQL_HTTP_ENDPOINT,
-})
-
-const apolloClient = new ApolloClient({
-  link: httpLink,
-  cache,
-})
 
 const app = createApp({
   setup() {
