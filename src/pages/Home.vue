@@ -25,30 +25,12 @@
   const ZERO_NUMBER = 11
   const LOGIN_NUMBER = 12
   const MAX_LENGTH = 10
+
   const phone = ref('')
-
-  const router = useRouter()
-  const authStore = useAuthStore()
-
-  watchEffect(() => {
-    if (authStore.isLogin) {
-      router.push('/points')
-    }
-  })
 
   const isValid = computed(() => {
     return /((?=(09))[0-9]{10})$/g.test(phone.value)
   })
-
-  const { login, onLoginDone, loading } = useLogin(phone)
-
-  const submit = () => {
-    login()
-
-    onLoginDone(async (result) => {
-      await authStore.setToken(result.data.login.token)
-    })
-  }
 
   const handleInput = (number: number | string) => {
     let addNumber = String(number)
@@ -73,5 +55,24 @@
     }
 
     phone.value += addNumber
+  }
+
+  const router = useRouter()
+  const authStore = useAuthStore()
+
+  watchEffect(() => {
+    if (authStore.isLogin) {
+      router.push('/points')
+    }
+  })
+
+  let loading = ref(false)
+
+  const submit = async () => {
+    loading.value = true
+
+    await authStore.authLogin(phone)
+
+    loading.value = false
   }
 </script>

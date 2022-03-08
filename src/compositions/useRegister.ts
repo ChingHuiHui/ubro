@@ -1,32 +1,35 @@
-import { useMutation } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
+
+import apolloClient from '@/plugins/apolloClient'
 
 export default (phone: Ref<string>) => {
-  const {
-    mutate: register,
-    onDone: onRegisterDone,
-    onError: onRegisterError,
-  } = useMutation(
-    gql`
-      mutation register($input: RegisterInput!) {
-        register(input: $input) {
-          phone
-        }
-      }
-    `,
-    () => ({
-      variables: {
-        input: {
-          phone: phone.value,
+  const register = async () => {
+    try {
+      const {
+        data: { login },
+      } = await apolloClient.mutate({
+        mutation: gql`
+          mutation register($input: RegisterInput!) {
+            register(input: $input) {
+              phone
+            }
+          }
+        `,
+        variables: {
+          input: {
+            phone: phone.value,
+          },
         },
-      },
-    })
-  )
+      })
+
+      // TODO: error's type
+    } catch (error) {
+      console.error('error')
+    }
+  }
 
   return {
     register,
-    onRegisterDone,
-    onRegisterError,
   }
 }

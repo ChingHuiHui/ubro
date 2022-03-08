@@ -1,59 +1,48 @@
-import { useMutation } from '@vue/apollo-composable'
+import { ref, Ref } from 'vue'
 import gql from 'graphql-tag'
 
 import useRegister from '@/compositions/useRegister'
-import { Ref } from 'vue'
+import apolloClient from '@/plugins/apolloClient'
+import type { ApolloError } from '@apollo/client'
 
 export default (phone: Ref<string>) => {
-  const { register, onRegisterError, onRegisterDone } = useRegister(phone)
+  const { register } = useRegister(phone)
 
-  // FIXME: 重複打login, register (第一次登入)
-  const {
-    mutate: login,
-    onError: onLoginError,
-    onDone: onLoginDone,
-    loading,
-  } = useMutation(
-    gql`
-      mutation login($input: LoginInput!) {
-        login(input: $input) {
-          token
-        }
-      }
-    `,
-    () => ({
-      variables: {
-        input: {
-          phone: phone.value,
-          password: phone.value,
+  const login = async () => {
+    try {
+      const {
+        data: { login },
+      } = await apolloClient.mutate({
+        mutation: gql`
+          mutation login($input: LoginInput!) {
+            login(input: $input) {
+              token
+            }
+          }
+        `,
+        variables: {
+          input: {
+            phone: phone.value,
+            password: phone.value,
+          },
         },
-      },
-    })
-  )
+      })
 
-  onLoginError((error) => {
-    console.log('error!!')
-    if (error.message === 'this phone not register') {
-      register()
+      return login.token
 
-      return
+      // TODO: error's type
+    } catch (error) {
+      if ((<ApolloError>error).message === 'this phone not register') {
+        await register()
+
+        return await login()
+      }
+
+      console.error(error)
     }
-
-    console.error(error)
-  })
-
-  onRegisterDone(() => {
-    console.log('onRegisterDone!!')
-    login()
-  })
-
-  onRegisterError((error) => {
-    console.error(error)
-  })
+  }
 
   return {
     login,
-    loading,
-    onLoginDone,
   }
 }

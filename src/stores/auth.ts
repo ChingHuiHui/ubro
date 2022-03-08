@@ -1,4 +1,6 @@
+import useLogin from '@/compositions/useLogin'
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { Ref } from 'vue'
 
 type User = {
   phone: string
@@ -21,6 +23,13 @@ export const useAuthStore = defineStore('auth', {
     },
   },
   actions: {
+    async authLogin(phone: Ref<string>) {
+      const { login } = useLogin(phone)
+
+      const token = await login()
+
+      this.setToken(token)
+    },
     setToken(token: string) {
       this.accessToken = token
 
