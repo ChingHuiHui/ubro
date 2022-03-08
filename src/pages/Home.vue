@@ -5,7 +5,12 @@
   >
     Loading ...
   </div>
-  <PhonePad v-if="!authStore.isLogin" @submit="submit" />
+  <PhonePad
+    v-if="!authStore.isLogin"
+    @submit="submit"
+    :phone="phone"
+    @input="handleInput"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -16,19 +21,26 @@
   import useLogin from '@/compositions/useLogin'
   import PhonePad from '@/components/PhonePad.vue'
 
+  const REMOVE_NUMBER = 10
+  const ZERO_NUMBER = 11
+  const LOGIN_NUMBER = 12
   const MAX_LENGTH = 10
-
   const phone = ref('')
 
   const router = useRouter()
+  const authStore = useAuthStore()
+
+  watchEffect(() => {
+    if (authStore.isLogin) {
+      router.push('/points')
+    }
+  })
 
   const isValid = computed(() => {
     return /((?=(09))[0-9]{10})$/g.test(phone.value)
   })
 
-  const authStore = useAuthStore()
-
-  const { login, onLoginDone, loading } = useLogin(phone.value)
+  const { login, onLoginDone, loading } = useLogin(phone)
 
   const submit = () => {
     login()
@@ -38,9 +50,28 @@
     })
   }
 
-  watchEffect(() => {
-    if (authStore.isLogin) {
-      router.push('/points')
+  const handleInput = (number: number | string) => {
+    let addNumber = String(number)
+
+    if (number === REMOVE_NUMBER) {
+      phone.value = phone.value.slice(0, -1)
+
+      return
     }
-  })
+
+    if (number === LOGIN_NUMBER) {
+      submit()
+      return
+    }
+
+    if (number === ZERO_NUMBER) {
+      addNumber = '0'
+    }
+
+    if (phone.value.length >= MAX_LENGTH) {
+      return
+    }
+
+    phone.value += addNumber
+  }
 </script>

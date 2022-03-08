@@ -21,7 +21,7 @@
           v-for="n in 12"
           :key="n"
           class="phone-button"
-          @click="handleClick(n)"
+          @click="emits('input', n)"
           :class="{ invalid: !isValid, 'login-button': n === LOGIN_NUMBER }"
         >
           <span v-if="n < 10">{{ n }}</span>
@@ -47,45 +47,17 @@
 
   import HuiIcon from '@/components/HuiIcon.vue'
 
-  const emits = defineEmits(['submit'])
+  const props = defineProps<{ phone: string }>()
+  const emits = defineEmits(['submit', 'input'])
 
   const BACKSPACE_CODE = 8
   const REMOVE_NUMBER = 10
   const ZERO_NUMBER = 11
   const LOGIN_NUMBER = 12
 
-  const MAX_LENGTH = 10
-
-  const phone = ref('')
-
   const isValid = computed(() => {
-    return /((?=(09))[0-9]{10})$/g.test(phone.value)
+    return /((?=(09))[0-9]{10})$/g.test(props.phone)
   })
-
-  const handleClick = (number: number | string) => {
-    let addNumber = String(number)
-
-    if (number === REMOVE_NUMBER) {
-      phone.value = phone.value.slice(0, -1)
-
-      return
-    }
-
-    if (number === LOGIN_NUMBER) {
-      emits('submit')
-      return
-    }
-
-    if (number === ZERO_NUMBER) {
-      addNumber = '0'
-    }
-
-    if (phone.value.length >= MAX_LENGTH) {
-      return
-    }
-
-    phone.value += addNumber
-  }
 
   onMounted(() => {
     const numbers = [...Array(10)].map((_, i) => `${i}`)
@@ -96,11 +68,11 @@
           (keyCode >= 96 && keyCode <= 105)) &&
         numbers.includes(key)
       ) {
-        handleClick(key)
+        emits('input', key)
       }
 
       if (keyCode === BACKSPACE_CODE) {
-        handleClick(REMOVE_NUMBER)
+        emits('input', REMOVE_NUMBER)
       }
     })
   })
