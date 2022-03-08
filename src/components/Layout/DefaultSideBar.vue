@@ -23,10 +23,20 @@
 </template>
 
 <script lang="ts" setup>
-  const links = [
-    { label: '集點卡', to: '/points' },
-    { label: '兌換', to: '/exchange' },
-  ]
+  import { useAuthStore } from '@/stores/auth'
+  import { computed } from 'vue'
+
+  const authStore = useAuthStore()
+  const links = computed(() => {
+    if (authStore.isLogin) {
+      return [
+        { label: '集點卡', to: '/points' },
+        { label: '兌換', to: '/exchange' },
+      ]
+    }
+
+    return []
+  })
 </script>
 
 <style scoped>
