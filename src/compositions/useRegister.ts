@@ -1,7 +1,8 @@
 import { useMutation } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
+import { Ref } from 'vue'
 
-export default (phone: string) => {
+export default (phone: Ref<string>) => {
   const {
     mutate: register,
     onDone: onRegisterDone,
@@ -17,7 +18,7 @@ export default (phone: string) => {
     () => ({
       variables: {
         input: {
-          phone,
+          phone: phone.value,
         },
       },
     })
