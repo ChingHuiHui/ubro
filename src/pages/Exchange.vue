@@ -5,7 +5,7 @@
         <div class="h1 !font-normal inline-block p-2">
           目前有
           <span class="text-primary-dark font-bold mx-1">
-            {{ currentPoint }} / 20
+            {{ currentPoint }} / {{ point }}
           </span>
           點
         </div>
@@ -45,6 +45,7 @@
           :products="products"
           @change="choose"
           :active="active"
+          :point="point"
         />
       </div>
     </div>
@@ -59,6 +60,8 @@
 
   import ProductList from '@/components/ProductList.vue'
   import ExchangeModal from '@/components/Modal/ExchangeModal.vue'
+  import { useAuthStore } from '@/stores/auth'
+  import { storeToRefs } from 'pinia'
 
   type Product = {
     id: number
@@ -78,6 +81,8 @@
 
   const products = useResult(result, null, (data): Product[] => data.products)
 
+  const { point } = storeToRefs(useAuthStore())
+
   const modalIsOpen = ref(false)
   const active = ref<number | null>(null)
 
@@ -96,6 +101,6 @@
   const currentPoint = computed((): number => {
     const cost = chosenProduct.value?.point || 0
 
-    return 20 - cost
+    return point.value - cost
   })
 </script>

@@ -41,7 +41,8 @@
 
   const props = defineProps<{ points: number }>()
 
-  const pages = Math.ceil(props.points / POINTS_PER_PAGE)
+  const pages =
+    props.points === 0 ? 1 : Math.ceil(props.points / POINTS_PER_PAGE)
 
   const getNumber = (pageNumber: number, pointNumber: number): number => {
     return (pages - 1 - pageNumber) * POINTS_PER_PAGE + pointNumber

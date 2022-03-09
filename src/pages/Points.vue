@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col flex-center">
     <div class="wrapper">
-      <PointCards :points="points" class="mb-5" />
+      <PointCards :points="point" class="mb-5" />
       <div
         class="bg-white rounded-2xl p-4 w-[20rem] flex justify-between space-x-4"
       >
@@ -38,8 +38,11 @@
   import HuiIcon from '@/components/HuiIcon.vue'
   import ConfrimedModal from '../components/Modal/ConfrimedModal.vue'
 
+  import { useAuthStore } from '@/stores/auth'
+  import { storeToRefs } from 'pinia'
+
   // TODO: correct points from api
-  const points = 22
+  const { point } = storeToRefs(useAuthStore())
 
   const modalIsOpen = ref(false)
 

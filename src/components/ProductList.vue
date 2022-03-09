@@ -12,7 +12,10 @@
       v-for="product in products"
       :key="product.id"
       class="product-row cursor-pointer"
-      :class="{ active: active === product.id }"
+      :class="{
+        active: active === product.id,
+        'bg-gray-200 bg-opacity-50 pointer-events-none': point < product.point,
+      }"
     >
       <div>
         <span>
@@ -29,7 +32,6 @@
 
 <script lang="ts" setup>
   import HuiIcon from '@/components/HuiIcon.vue'
-  import { readonly } from 'vue'
 
   type Product = {
     id: number
@@ -40,6 +42,7 @@
   defineProps<{
     products: readonly Product[] | null
     active: number | null
+    point: number
   }>()
 
   const emits = defineEmits(['change'])
