@@ -1,7 +1,9 @@
 <template>
   <div class="flex justify-end mb-5">
     <button class="btn btn-primary w-40">
-      <router-link :to="`/products/create`">新增 </router-link>
+      <router-link class="block" to="/admin/products/create">
+        新增
+      </router-link>
     </button>
   </div>
   <ProductList :products="products" />

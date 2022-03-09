@@ -3,7 +3,7 @@
     <nav class="h-full">
       <ul class="h-full p-10 flex flex-col items-center">
         <li class="mb-5 logo">
-          <router-link to="/" class="w-full h-full block" />
+          <router-link :to="homePage" class="w-full h-full block" />
         </li>
         <li v-for="{ label, to } in links" :key="label">
           <router-link :to="to">{{ label }}</router-link>
@@ -29,9 +29,20 @@
   import { useAuthStore } from '@/stores/auth'
   import { useRouter } from 'vue-router'
 
-  const { isLogin } = storeToRefs(useAuthStore())
+  const { isLogin, isAdmin } = storeToRefs(useAuthStore())
+
+  const homePage = computed(() => {
+    return isAdmin.value ? '/admin/products' : '/'
+  })
 
   const links = computed(() => {
+    if (isAdmin.value) {
+      return [
+        { label: '商品', to: '/admin/products' },
+        { label: '安全碼', to: '/admin/code' },
+      ]
+    }
+
     if (isLogin.value) {
       return [
         { label: '集點卡', to: '/points' },

@@ -13,7 +13,7 @@
         <span>{{ product.point }}</span>
         <div class="divide-x-2">
           <span class="px-2 cursor-pointer">
-            <router-link :to="`/products/${product.id}/update`">
+            <router-link :to="`/admin/products/${product.id}/update`">
               修改
             </router-link>
           </span>
