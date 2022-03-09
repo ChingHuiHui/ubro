@@ -9,14 +9,16 @@ type User = {
   isAdmin: boolean
 }
 
+const defaultUserInfo = {
+  phone: '',
+  point: 0,
+  isAdmin: false,
+}
+
 export const useAuthStore = defineStore('auth', {
   state: (): { accessToken: string | null; user: User } => ({
     accessToken: null,
-    user: {
-      phone: '',
-      point: 0,
-      isAdmin: false,
-    },
+    user: defaultUserInfo,
   }),
   getters: {
     isLogin(): boolean {
@@ -37,10 +39,21 @@ export const useAuthStore = defineStore('auth', {
 
       this.setToken(token)
     },
+    authLogout(): void {
+      this.removeToken()
+      this.setUser(defaultUserInfo)
+    },
     setToken(token: string): void {
       this.accessToken = token
 
       localStorage.setItem('token', token)
+    },
+    removeToken(): void {
+      this.accessToken = null
+      localStorage.removeItem('token')
+    },
+    setUser(user: User): void {
+      this.user = user
     },
     async fetchMe(): Promise<void> {
       const user = await useFetchMe()
@@ -49,7 +62,7 @@ export const useAuthStore = defineStore('auth', {
         return
       }
 
-      this.user = user
+      this.setUser(user)
     },
   },
 })

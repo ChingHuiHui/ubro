@@ -8,14 +8,14 @@
         <li v-for="{ label, to } in links" :key="label">
           <router-link :to="to">{{ label }}</router-link>
         </li>
-        <li class="mt-auto">
+        <li v-if="!isLogin">
           <router-link to="/admin/login">
             <button class="btn btn-primary w-40">管理者</button>
           </router-link>
         </li>
-        <li>
+        <li v-else>
           <!-- TODO: for logout -->
-          <button class="btn btn-primary w-40">完成</button>
+          <button class="btn btn-primary w-40" @click="logout">完成</button>
         </li>
       </ul>
     </nav>
@@ -23,12 +23,16 @@
 </template>
 
 <script lang="ts" setup>
-  import { useAuthStore } from '@/stores/auth'
   import { computed } from 'vue'
+  import { storeToRefs } from 'pinia'
 
-  const authStore = useAuthStore()
+  import { useAuthStore } from '@/stores/auth'
+  import { useRouter } from 'vue-router'
+
+  const { isLogin } = storeToRefs(useAuthStore())
+
   const links = computed(() => {
-    if (authStore.isLogin) {
+    if (isLogin.value) {
       return [
         { label: '集點卡', to: '/points' },
         { label: '兌換', to: '/exchange' },
@@ -37,6 +41,14 @@
 
     return []
   })
+
+  const { authLogout } = useAuthStore()
+  const router = useRouter()
+
+  const logout = async () => {
+    await authLogout()
+    await router.push('/')
+  }
 </script>
 
 <style scoped>
@@ -55,6 +67,10 @@
         &:hover,
         > a.router-link-exact-active {
           @apply text-gray-100;
+        }
+
+        &:last-child {
+          @apply mt-auto;
         }
       }
     }
