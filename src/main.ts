@@ -60,13 +60,38 @@ const i18n = createI18n({
 })
 
 const routes = [
-  { path: '/', component: Home },
-  { path: '/points', component: Points },
-  { path: '/exchange', component: Exchange },
+  { path: '/', component: Home, name: 'home' },
+  {
+    path: '/points',
+    component: Points,
+    name: 'user-points',
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/exchange',
+    component: Exchange,
+    name: 'user-exchange',
+    meta: { requiresAuth: true },
+  },
   { path: '/admin/login', name: 'admin-login', component: AdminLogin },
-  { path: '/products', component: Products },
-  { path: '/products/create', component: CreateProduct },
-  { path: '/products/:id/update', component: UpdateProduct },
+  {
+    path: '/admin/products',
+    component: Products,
+    name: 'admin-products.index',
+    meta: { requiresAdmin: true },
+  },
+  {
+    path: '/admin/products/create',
+    component: CreateProduct,
+    name: 'admin-products.store',
+    meta: { requiresAdmin: true },
+  },
+  {
+    path: '/admin/products/:id/update',
+    component: UpdateProduct,
+    name: 'admin-products.update',
+    meta: { requiresAdmin: true },
+  },
 ]
 
 const router = createRouter({
