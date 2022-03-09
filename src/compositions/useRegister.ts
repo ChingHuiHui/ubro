@@ -1,9 +1,8 @@
 import gql from 'graphql-tag'
-import type { Ref } from 'vue'
 
 import apolloClient from '@/plugins/apolloClient'
 
-export default (phone: Ref<string>) => {
+export default (phone: string) => {
   const register = async () => {
     try {
       const {
@@ -18,7 +17,7 @@ export default (phone: Ref<string>) => {
         `,
         variables: {
           input: {
-            phone: phone.value,
+            phone,
           },
         },
       })

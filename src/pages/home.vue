@@ -71,7 +71,7 @@
   const submit = async () => {
     loading.value = true
 
-    await authStore.authLogin(phone)
+    await authStore.authLogin({ phone: phone.value, password: phone.value })
 
     loading.value = false
   }

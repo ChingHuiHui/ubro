@@ -1,5 +1,5 @@
 import useFetchMe from '@/compositions/useFetchMe'
-import useLogin from '@/compositions/useLogin'
+import useLogin, { LoginInput } from '@/compositions/useLogin'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Ref } from 'vue'
 
@@ -32,18 +32,32 @@ export const useAuthStore = defineStore('auth', {
     },
   },
   actions: {
-    async authLogin(phone: Ref<string>): Promise<void> {
-      const { login } = useLogin(phone)
+    async authLogin({ phone, password }: LoginInput): Promise<void> {
+      const { login } = useLogin({ phone, password })
 
       const token = await login()
 
       this.setToken(token)
     },
+    async adminLogin({ phone, password }: LoginInput): Promise<void> {
+      const { adminLogin } = useLogin({ phone, password })
+      try {
+        const token = await adminLogin()
+
+        this.setToken(token)
+      } catch (error) {
+        throw error
+      }
+    },
     authLogout(): void {
       this.removeToken()
       this.setUser(defaultUserInfo)
     },
-    setToken(token: string): void {
+    setToken(token?: string): void {
+      if (!token) {
+        return
+      }
+
       this.accessToken = token
 
       localStorage.setItem('token', token)

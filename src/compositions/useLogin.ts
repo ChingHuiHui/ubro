@@ -5,10 +5,12 @@ import useRegister from '@/compositions/useRegister'
 import apolloClient from '@/plugins/apolloClient'
 import type { ApolloError } from '@apollo/client'
 
-export default (phone: Ref<string>) => {
+export type LoginInput = { phone: string; password: string }
+
+export default ({ phone, password }: LoginInput) => {
   const { register } = useRegister(phone)
 
-  const login = async () => {
+  const login = async (): Promise<string | undefined> => {
     try {
       const {
         data: { login },
@@ -22,8 +24,8 @@ export default (phone: Ref<string>) => {
         `,
         variables: {
           input: {
-            phone: phone.value,
-            password: phone.value,
+            phone,
+            password,
           },
         },
       })
@@ -38,11 +40,38 @@ export default (phone: Ref<string>) => {
         return await login()
       }
 
-      console.error(error)
+      throw error
+    }
+  }
+
+  const adminLogin = async (): Promise<string | undefined> => {
+    try {
+      const {
+        data: { adminLogin },
+      } = await apolloClient.mutate({
+        mutation: gql`
+          mutation adminLogin($input: LoginInput!) {
+            adminLogin(input: $input) {
+              token
+            }
+          }
+        `,
+        variables: {
+          input: {
+            phone,
+            password,
+          },
+        },
+      })
+
+      return adminLogin.token
+    } catch (error) {
+      throw error
     }
   }
 
   return {
     login,
+    adminLogin,
   }
 }
