@@ -1,20 +1,24 @@
-import { useQuery, useResult } from '@vue/apollo-composable'
+import apolloClient from '@/plugins/apolloClient'
 import gql from 'graphql-tag'
 
-export default () => {
-  const { result } = useQuery(
-    gql`
-      query me {
-        me {
-          phone
+export default async () => {
+  try {
+    const {
+      data: { me },
+    } = await apolloClient.query({
+      query: gql`
+        query me {
+          me {
+            phone
+            point
+            isAdmin
+          }
         }
-      }
-    `
-  )
+      `,
+    })
 
-  const user = useResult(result, '')
-
-  return {
-    user,
+    return me
+  } catch (error) {
+    console.log(error)
   }
 }

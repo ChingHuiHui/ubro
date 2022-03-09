@@ -12,11 +12,26 @@
 
 <script setup lang="ts">
   import { computed } from 'vue'
-  import { useRoute } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
 
   import DefaultSideBar from './components/Layout/DefaultSideBar.vue'
+  import { useAuthStore } from './stores/auth'
 
   const route = useRoute()
+  const router = useRouter()
+
+  const authStore = useAuthStore()
 
   const isAdminLoginPage = computed(() => route.name === 'admin-login')
+
+  router.beforeEach(() => {
+    const token = localStorage.getItem('token')
+
+    if (!token) {
+      return
+    }
+
+    authStore.setToken(token)
+    authStore.fetchMe()
+  })
 </script>
