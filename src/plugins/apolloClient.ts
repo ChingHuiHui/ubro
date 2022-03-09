@@ -13,12 +13,11 @@ const httpLink = createHttpLink({
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token')
 
-  // TODO: modify the header (use Authorization)
   if (token) {
     return {
       headers: {
         ...headers,
-        'x-token': token || null,
+        Authorization: token || null,
       },
     }
   }
