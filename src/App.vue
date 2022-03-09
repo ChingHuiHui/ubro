@@ -24,7 +24,18 @@
 
   const isAdminLoginPage = computed(() => route.name === 'admin-login')
 
-  router.beforeEach((to) => {
+  router.beforeEach(async (to) => {
+    const token = await localStorage.getItem('token')
+
+    console.log('token', token)
+
+    if (!token) {
+      return
+    }
+
+    await authStore.setToken(token)
+    await authStore.fetchMe()
+
     if (to.meta.requiresAuth && !authStore.isLogin) {
       return {
         name: 'home',
@@ -36,16 +47,5 @@
         name: 'admin-login',
       }
     }
-  })
-
-  router.beforeEach(() => {
-    const token = localStorage.getItem('token')
-
-    if (!token) {
-      return
-    }
-
-    authStore.setToken(token)
-    authStore.fetchMe()
   })
 </script>
