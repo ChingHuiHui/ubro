@@ -27,8 +27,9 @@
   import { storeToRefs } from 'pinia'
 
   import { useAuthStore } from '@/stores/auth'
-  import { useRouter } from 'vue-router'
+  import { useRouter, useRoute } from 'vue-router'
 
+  const route = useRoute()
   const { isLogin, isAdmin } = storeToRefs(useAuthStore())
 
   const homePage = computed(() => {
@@ -36,14 +37,18 @@
   })
 
   const links = computed(() => {
-    if (isAdmin.value) {
+    if (isAdmin.value && isLogin.value) {
       return [
         { label: '商品', to: '/admin/products' },
         { label: '安全碼', to: '/admin/code' },
       ]
     }
 
-    if (isLogin.value) {
+    if (
+      !isAdmin.value &&
+      isLogin.value &&
+      (route.name as string | undefined)?.includes('admin')
+    ) {
       return [
         { label: '集點卡', to: '/points' },
         { label: '兌換', to: '/exchange' },
