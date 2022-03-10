@@ -1,6 +1,6 @@
 <template>
-  <ul class="product-table py-6 bg-white h-full rounded-t-2xl">
-    <li class="product-row p-2 text-gray-800">
+  <ul class="product-table bg-white h-full overflow-y-scroll rounded-t-2xl">
+    <li class="product-row !pt-6 text-gray-800 sticky top-0 bg-white">
       <div>
         <span>品項</span>
         <span>點數</span>
@@ -19,7 +19,7 @@
           </span>
           <span
             class="text-red-700 px-2 cursor-pointer"
-            @click="deleteProduct(product.id)"
+            @click="chooseDelete(product.id)"
           >
             刪除
           </span>
@@ -29,16 +29,16 @@
     <DeleteModal
       v-if="modelIsOpen"
       @close="modelIsOpen = false"
+      @submit="deleteProduct"
       :deleted-id="deletedId"
     />
   </ul>
 </template>
 
 <script lang="ts" setup>
-  import { readonly, ref, nextTick } from 'vue'
+  import { ref, nextTick } from 'vue'
 
   import DeleteModal from '@/components/Modal/DeleteModal.vue'
-  import HuiIcon from '@/components/HuiIcon.vue'
 
   type Product = {
     id: number
@@ -50,13 +50,21 @@
     products: readonly Product[] | null
   }>()
 
+  const emits = defineEmits(['delete-product'])
+
   const modelIsOpen = ref(false)
   const deletedId = ref<number | null>(null)
 
-  const deleteProduct = (id: number) => {
+  const chooseDelete = (id: number) => {
     deletedId.value = id
 
     nextTick(() => (modelIsOpen.value = true))
+  }
+
+  const deleteProduct = async (id: number) => {
+    await emits('delete-product', id)
+
+    modelIsOpen.value = false
   }
 </script>
 

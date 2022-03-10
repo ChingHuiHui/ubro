@@ -18,16 +18,24 @@
           新增
         </button>
       </HuiForm>
+      <div v-if="error" class="mt-1 text-sm text-red-500">{{ error }}</div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import * as yup from 'yup'
+  import { ref } from 'vue'
   import { useRouter } from 'vue-router'
 
+  import gql from 'graphql-tag'
+  import apolloClient from '@/plugins/apolloClient'
+
+  import * as yup from 'yup'
   import HuiForm from '@/components/Shared/HuiForm.vue'
   import HuiInput from '@/components/Shared/HuiInput.vue'
+  import { ApolloError } from '@apollo/client/core'
+
+  const error = ref('')
 
   const router = useRouter()
 
@@ -36,11 +44,30 @@
     point: yup.number().required(),
   })
 
-  const submit = (values: { name: string; point: number }) => {
-    // TODO: create product
-    console.log('name', values.name, 'point', values.point)
+  const submit = async (values: { name: string; point: number }) => {
+    try {
+      const { name, point } = values
 
-    router.push('/products')
+      await apolloClient.mutate({
+        mutation: gql`
+          mutation createProduct($input: CreateProductInput!) {
+            createProduct(input: $input) {
+              id
+            }
+          }
+        `,
+        variables: {
+          input: {
+            name,
+            point: Number(point),
+          },
+        },
+      })
+
+      await router.push('/admin/products')
+    } catch (e) {
+      error.value = (<ApolloError>e).message
+    }
   }
 </script>
 
