@@ -44,7 +44,7 @@
   import { useAuthStore } from '@/stores/auth'
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
-  import { ApolloError } from '@apollo/client'
+  import { ApolloError } from '@apollo/client/core'
 
   const rules = yup.object({
     phone: yup.string().required(),

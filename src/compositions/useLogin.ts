@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 
 import useRegister from '@/compositions/useRegister'
 import apolloClient from '@/plugins/apolloClient'
-import type { ApolloError } from '@apollo/client'
+import type { ApolloError } from '@apollo/client/core'
 
 export type LoginInput = { phone: string; password: string }
 
