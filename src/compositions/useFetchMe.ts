@@ -15,6 +15,7 @@ export default async () => {
           }
         }
       `,
+      fetchPolicy: 'no-cache',
     })
 
     return me

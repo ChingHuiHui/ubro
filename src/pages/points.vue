@@ -27,6 +27,7 @@
       v-if="modalIsOpen"
       :number="number"
       @close="modalIsOpen = false"
+      @submit="resetNumber"
     />
   </div>
 </template>
@@ -41,7 +42,6 @@
   import { useAuthStore } from '@/stores/auth'
   import { storeToRefs } from 'pinia'
 
-  // TODO: correct points from api
   const { point } = storeToRefs(useAuthStore())
 
   const modalIsOpen = ref(false)
@@ -58,6 +58,10 @@
     }
 
     number.value--
+  }
+
+  const resetNumber = (): void => {
+    number.value = 0
   }
 </script>
 
