@@ -23,6 +23,7 @@ import Home from '@/pages/Home.vue'
 import Points from '@/pages/points.vue'
 import Exchange from '@/pages/exchange.vue'
 import AdminLogin from '@/pages/admin/login.vue'
+import Code from '@/pages/admin/code.vue'
 import Products from '@/pages/products/index.vue'
 import CreateProduct from '@/pages/products/create.vue'
 import UpdateProduct from '@/pages/products/update.vue'
@@ -74,6 +75,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   { path: '/admin/login', name: 'admin-login', component: AdminLogin },
+  { path: '/admin/code', name: 'admin-code', component: Code },
   {
     path: '/admin/products',
     component: Products,
