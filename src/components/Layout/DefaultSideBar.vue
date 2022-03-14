@@ -47,7 +47,7 @@
     if (
       !isAdmin.value &&
       isLogin.value &&
-      (route.name as string | undefined)?.includes('admin')
+      !(route.name as string | undefined)?.includes('admin')
     ) {
       return [
         { label: '集點卡', to: '/points' },
