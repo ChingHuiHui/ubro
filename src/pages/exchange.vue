@@ -49,7 +49,12 @@
         />
       </div>
     </div>
-    <ExchangeModal v-if="modalIsOpen" @close="modalIsOpen = false" />
+    <ExchangeModal
+      :product-id="active"
+      v-if="modalIsOpen"
+      @close="modalIsOpen = false"
+      @submit="resetChoose"
+    />
   </div>
 </template>
 
@@ -103,4 +108,8 @@
 
     return point.value - cost
   })
+
+  const resetChoose = (): void => {
+    active.value = null
+  }
 </script>
