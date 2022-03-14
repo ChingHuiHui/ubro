@@ -28,24 +28,25 @@
 </template>
 
 <script lang="ts" setup>
+  import { computed } from 'vue'
   import { Swiper, SwiperSlide } from 'swiper/vue'
   import { Pagination, EffectCards } from 'swiper'
 
   import 'swiper/css'
   import 'swiper/css/pagination'
   import 'swiper/css/effect-cards'
-
   const modules = [EffectCards, Pagination]
 
   const POINTS_PER_PAGE = 10
 
   const props = defineProps<{ points: number }>()
 
-  const pages =
+  const pages = computed(() =>
     props.points === 0 ? 1 : Math.ceil(props.points / POINTS_PER_PAGE)
+  )
 
   const getNumber = (pageNumber: number, pointNumber: number): number => {
-    return (pages - 1 - pageNumber) * POINTS_PER_PAGE + pointNumber
+    return (pages.value - 1 - pageNumber) * POINTS_PER_PAGE + pointNumber
   }
 
   const haveStamp = (pageNumber: number, pointNumber: number): boolean => {
