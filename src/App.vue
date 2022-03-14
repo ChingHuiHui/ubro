@@ -31,6 +31,16 @@
       return
     }
 
+    const exp = getExpireTime(token)
+
+    if (exp && isExpired(exp)) {
+      await authStore.removeToken()
+
+      return {
+        name: 'home',
+      }
+    }
+
     await authStore.setToken(token)
     await authStore.fetchMe()
 
@@ -46,4 +56,22 @@
       }
     }
   })
+
+  const getExpireTime = (token: string | null): number | null => {
+    try {
+      if (!token) {
+        return null
+      }
+
+      const { exp } = JSON.parse(atob(token.split('.')[1]))
+
+      return exp
+    } catch (e) {
+      return null
+    }
+  }
+
+  const isExpired = (exp: number): boolean => {
+    return Date.now() > exp * 1000
+  }
 </script>
