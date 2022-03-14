@@ -81,28 +81,27 @@
 
   // TODO: optimize the Hui-Form
   const submit = async (values: { name: string; point: number }) => {
-    const updateProduct = async (name: string, point: number) => {
-      await apolloClient.mutate({
-        mutation: gql`
-          mutation updateProduct($input: UpdateProductInput!) {
-            updateProduct(input: $input) {
-              id
-              name
-              point
-            }
-          }
-        `,
-        variables: {
-          input: {
-            id: Number(route.params.id),
-            name,
-            point: Number(point),
-          },
-        },
-      })
-    }
+    const { name, point } = values
 
-    await updateProduct(values.name, values.point)
+    await apolloClient.mutate({
+      mutation: gql`
+        mutation updateProduct($input: UpdateProductInput!) {
+          updateProduct(input: $input) {
+            id
+            name
+            point
+          }
+        }
+      `,
+      variables: {
+        input: {
+          id: Number(route.params.id),
+          name,
+          point: Number(point),
+        },
+      },
+    })
+
     await router.push('/admin/products')
   }
 </script>
