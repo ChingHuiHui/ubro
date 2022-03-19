@@ -1,13 +1,10 @@
 import gql from 'graphql-tag'
-
 import apolloClient from '@/plugins/apolloClient'
 
 export default (phone: string) => {
   const register = async () => {
     try {
-      const {
-        data: { login },
-      } = await apolloClient.mutate({
+      await apolloClient.mutate({
         mutation: gql`
           mutation register($input: RegisterInput!) {
             register(input: $input) {
@@ -21,10 +18,8 @@ export default (phone: string) => {
           },
         },
       })
-
-      // TODO: error's type
     } catch (error) {
-      console.error('error')
+      throw error
     }
   }
 
