@@ -52,7 +52,7 @@
         variables: {
           input: {
             point: Number(props.number),
-            SecurityCode: code.value,
+            securityCode: code.value,
           },
         },
       })
