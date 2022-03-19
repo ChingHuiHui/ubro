@@ -41,16 +41,19 @@
   })
 
   const submit = async () => {
-    // TODO: add security code
+    // TODO: fix security code
     try {
       await apolloClient.mutate({
         mutation: gql`
-          mutation updatePoint($point: Int!) {
-            updatePoint(point: $point)
+          mutation updatePoint($input: UpdatePointInput!) {
+            updatePoint(input: $input)
           }
         `,
         variables: {
-          point: Number(props.number),
+          input: {
+            point: Number(props.number),
+            SecurityCode: code.value,
+          },
         },
       })
 
