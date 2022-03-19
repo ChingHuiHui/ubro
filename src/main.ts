@@ -19,7 +19,7 @@ import { zh, en } from '@/lang'
 import StoragePlugin from '@/plugins/storage'
 
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/pages/Home.vue'
+import Home from '@/pages/home.vue'
 import Points from '@/pages/points.vue'
 import Exchange from '@/pages/exchange.vue'
 import AdminLogin from '@/pages/login.vue'
