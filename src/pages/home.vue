@@ -1,21 +1,23 @@
 <template>
-  <div
-    v-if="loading"
-    class="fixed inset-0 bg-black bg-opacity-60 flex-center text-white"
-  >
-    Loading ...
+  <div>
+    <div
+      v-if="loading"
+      class="fixed inset-0 bg-black bg-opacity-60 flex-center text-white"
+    >
+      Loading ...
+    </div>
+    <PhonePad
+      v-if="!isLogin"
+      @submit="submit"
+      :phone="phone"
+      @input="handleInput"
+    />
+    <RegisterModal
+      v-if="modalIsOpen"
+      @submit="register"
+      @close="modalIsOpen = false"
+    />
   </div>
-  <PhonePad
-    v-if="!isLogin"
-    @submit="submit"
-    :phone="phone"
-    @input="handleInput"
-  />
-  <RegisterModal
-    v-if="modalIsOpen"
-    @submit="register"
-    @close="modalIsOpen = false"
-  />
 </template>
 
 <script lang="ts" setup>
@@ -26,7 +28,7 @@
   import { storeToRefs } from 'pinia'
   import { useAuthStore } from '@/stores/auth'
   import { ApolloError } from '@apollo/client/errors'
-  
+
   import RegisterModal from '@/components/Modal/RegisterModal.vue'
   import PhonePad from '@/components/PhonePad.vue'
 

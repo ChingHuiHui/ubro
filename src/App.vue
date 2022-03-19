@@ -5,7 +5,11 @@
       class="flex-1 pt-16 px-10 overflow-x-hidden relative"
       :class="{ 'bg-white': isAdminLoginPage }"
     >
-      <router-view></router-view>
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          <component :key="$route.name" :is="Component" />
+        </transition>
+      </router-view>
     </main>
   </div>
 </template>
@@ -75,3 +79,14 @@
     return Date.now() > exp * 1000
   }
 </script>
+
+<style scoped>
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.3s;
+  }
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
+</style>
