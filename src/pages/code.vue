@@ -14,7 +14,11 @@
         class="w-64 space-y-6"
       >
         <HuiInput name="code" label="安全碼" type="password" />
-        <HuiInput name="codeConfirmation" label="二次驗證" type="password" />
+        <HuiInput
+          name="codeConfirmation"
+          label="請再輸入一次"
+          type="password"
+        />
         <button
           :disabled="invalid"
           class="btn btn-primary btn-block"
