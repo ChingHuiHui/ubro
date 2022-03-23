@@ -30,7 +30,6 @@
   import gql from 'graphql-tag'
   import { useAuthStore } from '@/stores/auth'
   import { useFetchStore } from '@/stores/fetchStatus'
-  import { useFetch } from '@/compositions/useFetch'
   import { storeToRefs } from 'pinia'
 
   const props = defineProps<{ number: number }>()
@@ -47,31 +46,27 @@
   const { errorMessage } = storeToRefs(useFetchStore())
 
   const submit = async () => {
-    const action = async () => {
-      try {
-        await apolloClient.mutate({
-          mutation: gql`
-            mutation updatePoint($input: UpdatePointInput!) {
-              updatePoint(input: $input)
-            }
-          `,
-          variables: {
-            input: {
-              point: Number(props.number),
-              securityCode: code.value,
-            },
+    try {
+      await apolloClient.mutate({
+        mutation: gql`
+          mutation updatePoint($input: UpdatePointInput!) {
+            updatePoint(input: $input)
+          }
+        `,
+        variables: {
+          input: {
+            point: Number(props.number),
+            securityCode: code.value,
           },
-        })
+        },
+      })
 
-        await authStore.fetchMe()
+      await authStore.fetchMe()
 
-        emits('submit')
-        emits('close')
-      } catch (e) {
-        console.log(e)
-      }
+      emits('submit')
+      emits('close')
+    } catch (e) {
+      console.log(e)
     }
-
-    await useFetch(action)
   }
 </script>

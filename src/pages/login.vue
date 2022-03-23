@@ -1,5 +1,11 @@
 <template>
   <div class="container h-full flex lg:items-center">
+    <div
+      v-if="loading"
+      class="fixed inset-0 bg-black bg-opacity-60 flex-center text-white"
+    >
+      Loading ...
+    </div>
     <div class="w-full grid lg:grid-cols-2 lg:gap-20">
       <HuiForm
         v-slot="{ values }"
@@ -39,7 +45,6 @@
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
   import { ApolloError } from '@apollo/client/core'
-  import { useFetch } from '@/compositions/useFetch'
 
   const rules = yup.object({
     phone: yup.string().required(),
@@ -49,26 +54,26 @@
   const { adminLogin } = useAuthStore()
   const router = useRouter()
 
+  let loading = ref(false)
   let errorText = ref('')
 
   const submit = async (values: { phone: string; password: string }) => {
-    const action = async () => {
-      try {
-        const { phone, password } = values
+    try {
+      loading.value = true
+      const { phone, password } = values
 
-        await adminLogin({
-          phone: phone,
-          password: password,
-        })
+      await adminLogin({
+        phone: phone,
+        password: password,
+      })
 
-        errorText.value = ''
-        router.push({ name: 'admin-products.index' })
-      } catch (error) {
-        errorText.value = (<ApolloError>error).message
-      }
+      errorText.value = ''
+      loading.value = false
+      router.push({ name: 'admin-products.index' })
+    } catch (error) {
+      errorText.value = (<ApolloError>error).message
+      loading.value = false
     }
-
-    await useFetch(action)
   }
 </script>
 

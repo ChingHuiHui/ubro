@@ -1,17 +1,15 @@
 <template>
   <div class="h-screen flex">
-    <div
-      v-if="loading"
-      class="fixed inset-0 bg-black bg-opacity-60 flex-center text-white z-50"
-    >
-      Loading ...
-    </div>
     <DefaultSideBar v-if="!isAdminLoginPage" />
     <main
       class="flex-1 pt-16 px-10 overflow-x-hidden relative"
       :class="{ 'bg-white': isAdminLoginPage }"
     >
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          <component :key="$route.name" :is="Component" />
+        </transition>
+      </router-view>
     </main>
   </div>
 </template>
@@ -22,7 +20,6 @@
 
   import DefaultSideBar from './components/Layout/DefaultSideBar.vue'
   import { useAuthStore } from './stores/auth'
-  import { loading } from '@/compositions/useFetch'
 
   const route = useRoute()
   const router = useRouter()
@@ -82,3 +79,14 @@
     return Date.now() > exp * 1000
   }
 </script>
+
+<style scoped>
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.3s;
+  }
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
+</style>

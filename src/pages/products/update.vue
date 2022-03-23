@@ -1,7 +1,8 @@
 <template>
   <div class="flex justify-center mt-20">
-    <div class="bg-white p-6 rounded-xl wrapper" v-if="!isFetchInfo">
+    <div class="bg-white p-6 rounded-xl wrapper">
       <HuiForm
+        v-if="!loading"
         v-slot="{ invalid }"
         :rules="rules"
         :action="submit"
@@ -31,11 +32,8 @@
   import HuiInput from '@/components/Shared/HuiInput.vue'
   import gql from 'graphql-tag'
 
-  import { reactive, ref, watchPostEffect } from 'vue'
+  import { reactive, ref, watchEffect, watchPostEffect } from 'vue'
   import apolloClient from '@/plugins/apolloClient'
-  import { useFetch } from '@/compositions/useFetch'
-
-  const isFetchInfo = ref(false)
 
   const router = useRouter()
   const route = useRoute()
@@ -50,34 +48,31 @@
     point: 0,
   })
 
+  const loading = ref(true)
+
   const fetchProduct = async () => {
-    const action = async () => {
-      const {
-        data: { product },
-      } = await apolloClient.query({
-        query: gql`
-          query product($id: Int!) {
-            product(id: $id) {
-              id
-              name
-              point
-            }
+    loading.value = true
+    const {
+      data: { product },
+    } = await apolloClient.query({
+      query: gql`
+        query product($id: Int!) {
+          product(id: $id) {
+            id
+            name
+            point
           }
-        `,
-        variables: {
-          id: +route.params.id,
-        },
-      })
+        }
+      `,
+      variables: {
+        id: +route.params.id,
+      },
+    })
 
-      initialValues.name = product.name
-      initialValues.point = product.point
-    }
+    initialValues.name = product.name
+    initialValues.point = product.point
 
-    isFetchInfo.value = true
-
-    await useFetch(action)
-
-    isFetchInfo.value = false
+    loading.value = false
   }
 
   watchPostEffect(() => {
@@ -86,32 +81,28 @@
 
   // TODO: optimize the Hui-Form
   const submit = async (values: { name: string; point: number }) => {
-    const action = async () => {
-      const { name, point } = values
+    const { name, point } = values
 
-      await apolloClient.mutate({
-        mutation: gql`
-          mutation updateProduct($input: UpdateProductInput!) {
-            updateProduct(input: $input) {
-              id
-              name
-              point
-            }
+    await apolloClient.mutate({
+      mutation: gql`
+        mutation updateProduct($input: UpdateProductInput!) {
+          updateProduct(input: $input) {
+            id
+            name
+            point
           }
-        `,
-        variables: {
-          input: {
-            id: Number(route.params.id),
-            name,
-            point: Number(point),
-          },
+        }
+      `,
+      variables: {
+        input: {
+          id: Number(route.params.id),
+          name,
+          point: Number(point),
         },
-      })
+      },
+    })
 
-      await router.push('/admin/products')
-    }
-
-    await useFetch(action)
+    await router.push('/admin/products')
   }
 </script>
 
