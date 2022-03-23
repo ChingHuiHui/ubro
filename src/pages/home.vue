@@ -1,11 +1,5 @@
 <template>
   <div>
-    <div
-      v-if="loading"
-      class="fixed inset-0 bg-black bg-opacity-60 flex-center text-white"
-    >
-      Loading ...
-    </div>
     <PhonePad
       v-if="!isLogin"
       @submit="submit"
@@ -31,6 +25,7 @@
 
   import RegisterModal from '@/components/Modal/RegisterModal.vue'
   import PhonePad from '@/components/PhonePad.vue'
+  import { useFetch } from '@/compositions/useFetch'
 
   const REMOVE_NUMBER = 10
   const ZERO_NUMBER = 11
@@ -79,29 +74,28 @@
     }
   })
 
-  let loading = ref(false)
-
   const register = async () => {
-    loading.value = true
+    const action = async () => {
+      modalIsOpen.value = false
+      await authRegister({ phone: phone.value })
+    }
 
-    modalIsOpen.value = false
-    await authRegister({ phone: phone.value })
-
-    loading.value = false
-    alert('完成')
+    useFetch(action).then(() => {
+      alert('完成')
+    })
   }
 
   const submit = async () => {
-    loading.value = true
-
-    try {
-      await authLogin({ phone: phone.value, password: phone.value })
-    } catch (error) {
-      if ((<ApolloError>error).message === 'this phone not register') {
-        modalIsOpen.value = true
+    const action = async () => {
+      try {
+        await authLogin({ phone: phone.value, password: phone.value })
+      } catch (error) {
+        if ((<ApolloError>error).message === 'this phone not register') {
+          modalIsOpen.value = true
+        }
       }
-    } finally {
-      loading.value = false
     }
+
+    await useFetch(action)
   }
 </script>

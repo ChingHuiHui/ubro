@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed inset-0 z-50 bg-black bg-opacity-60 flex-center"
+    class="fixed inset-0 z-40 bg-black bg-opacity-60 flex-center"
     @click.self="close"
   >
     <div class="modal min-w-[300px] bg-white p-6 rounded-lg relative">

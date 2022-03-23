@@ -15,6 +15,7 @@
 
   import { useAuthStore } from '@/stores/auth'
   import Modal from '@/components/Modal.vue'
+  import { useFetch } from '@/compositions/useFetch'
 
   const props = defineProps<{ productId: number | null }>()
   const emits = defineEmits(['close', 'submit'])
@@ -22,24 +23,28 @@
   const authStore = useAuthStore()
 
   const submit = async () => {
-    try {
-      await apolloClient.mutate({
-        mutation: gql`
-          mutation exchange($productId: Int!) {
-            exchange(productId: $productId)
-          }
-        `,
-        variables: {
-          productId: props.productId,
-        },
-      })
+    const action = async () => {
+      try {
+        await apolloClient.mutate({
+          mutation: gql`
+            mutation exchange($productId: Int!) {
+              exchange(productId: $productId)
+            }
+          `,
+          variables: {
+            productId: props.productId,
+          },
+        })
 
-      await authStore.fetchMe()
+        await authStore.fetchMe()
 
-      emits('submit')
-      emits('close')
-    } catch (e) {
-      console.log(e)
+        emits('submit')
+        emits('close')
+      } catch (e) {
+        console.log(e)
+      }
     }
+
+    await useFetch(action)
   }
 </script>

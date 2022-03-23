@@ -28,6 +28,7 @@
   import apolloClient from '@/plugins/apolloClient'
   import gql from 'graphql-tag'
   import { useAuthStore } from '@/stores/auth'
+  import { useFetch } from '@/compositions/useFetch'
 
   const props = defineProps<{ number: number }>()
   const emits = defineEmits(['close', 'submit'])
@@ -41,28 +42,31 @@
   })
 
   const submit = async () => {
-    // TODO: fix security code
-    try {
-      await apolloClient.mutate({
-        mutation: gql`
-          mutation updatePoint($input: UpdatePointInput!) {
-            updatePoint(input: $input)
-          }
-        `,
-        variables: {
-          input: {
-            point: Number(props.number),
-            securityCode: code.value,
+    const action = async () => {
+      try {
+        await apolloClient.mutate({
+          mutation: gql`
+            mutation updatePoint($input: UpdatePointInput!) {
+              updatePoint(input: $input)
+            }
+          `,
+          variables: {
+            input: {
+              point: Number(props.number),
+              securityCode: code.value,
+            },
           },
-        },
-      })
+        })
 
-      await authStore.fetchMe()
+        await authStore.fetchMe()
 
-      emits('submit')
-      emits('close')
-    } catch (e) {
-      console.log(e)
+        emits('submit')
+        emits('close')
+      } catch (e) {
+        console.log(e)
+      }
     }
+
+    await useFetch(action)
   }
 </script>

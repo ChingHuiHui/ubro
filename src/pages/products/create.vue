@@ -34,6 +34,7 @@
   import HuiForm from '@/components/Shared/HuiForm.vue'
   import HuiInput from '@/components/Shared/HuiInput.vue'
   import { ApolloError } from '@apollo/client/core'
+  import { useFetch } from '@/compositions/useFetch'
 
   const error = ref('')
 
@@ -45,29 +46,33 @@
   })
 
   const submit = async (values: { name: string; point: number }) => {
-    try {
-      const { name, point } = values
+    const action = async () => {
+      try {
+        const { name, point } = values
 
-      await apolloClient.mutate({
-        mutation: gql`
-          mutation createProduct($input: CreateProductInput!) {
-            createProduct(input: $input) {
-              id
+        await apolloClient.mutate({
+          mutation: gql`
+            mutation createProduct($input: CreateProductInput!) {
+              createProduct(input: $input) {
+                id
+              }
             }
-          }
-        `,
-        variables: {
-          input: {
-            name,
-            point: Number(point),
+          `,
+          variables: {
+            input: {
+              name,
+              point: Number(point),
+            },
           },
-        },
-      })
+        })
 
-      await router.push('/admin/products')
-    } catch (e) {
-      error.value = (<ApolloError>e).message
+        await router.push('/admin/products')
+      } catch (e) {
+        error.value = (<ApolloError>e).message
+      }
     }
+
+    await useFetch(action)
   }
 </script>
 
