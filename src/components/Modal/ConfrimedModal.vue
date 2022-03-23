@@ -12,6 +12,7 @@
         minlength="4"
       />
     </div>
+    <p class="text-red-500 text-sm mb-1">{{ errorMessage }}</p>
     <button
       :disabled="code.length < 4"
       class="btn btn-primary btn-block"
@@ -28,7 +29,9 @@
   import apolloClient from '@/plugins/apolloClient'
   import gql from 'graphql-tag'
   import { useAuthStore } from '@/stores/auth'
+  import { useFetchStore } from '@/stores/fetchStatus'
   import { useFetch } from '@/compositions/useFetch'
+  import { storeToRefs } from 'pinia'
 
   const props = defineProps<{ number: number }>()
   const emits = defineEmits(['close', 'submit'])
@@ -40,6 +43,8 @@
   const title = computed(() => {
     return `新增 ${props.number} 點`
   })
+
+  const { errorMessage } = storeToRefs(useFetchStore())
 
   const submit = async () => {
     const action = async () => {
