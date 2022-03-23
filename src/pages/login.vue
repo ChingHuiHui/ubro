@@ -1,11 +1,5 @@
 <template>
   <div class="container h-full flex lg:items-center">
-    <div
-      v-if="loading"
-      class="fixed inset-0 bg-black bg-opacity-60 flex-center text-white"
-    >
-      Loading ...
-    </div>
     <div class="w-full grid lg:grid-cols-2 lg:gap-20">
       <HuiForm
         v-slot="{ values }"
@@ -54,12 +48,10 @@
   const { adminLogin } = useAuthStore()
   const router = useRouter()
 
-  let loading = ref(false)
   let errorText = ref('')
 
   const submit = async (values: { phone: string; password: string }) => {
     try {
-      loading.value = true
       const { phone, password } = values
 
       await adminLogin({
@@ -68,11 +60,10 @@
       })
 
       errorText.value = ''
-      loading.value = false
+
       router.push({ name: 'admin-products.index' })
     } catch (error) {
       errorText.value = (<ApolloError>error).message
-      loading.value = false
     }
   }
 </script>

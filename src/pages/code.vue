@@ -1,11 +1,5 @@
 <template>
   <div class="container flex-center mt-20">
-    <div
-      v-if="loading"
-      class="fixed inset-0 bg-black bg-opacity-60 flex-center text-white"
-    >
-      Loading ...
-    </div>
     <div class="bg-white p-10 rounded-2xl">
       <HuiForm
         v-slot="{ invalid }"
@@ -26,7 +20,7 @@
         >
           變更
         </button>
-        <div class="mt-1 text-sm text-red-500">{{ errorText }}</div>
+        <div class="mt-1 text-sm text-red-500">{{ errorMessage }}</div>
         <div class="mt-1 text-sm text-blue-500">{{ successText }}</div>
       </HuiForm>
     </div>
@@ -43,6 +37,8 @@
 
   import HuiForm from '@/components/Shared/HuiForm.vue'
   import HuiInput from '@/components/Shared/HuiInput.vue'
+  import { useFetchStore } from '@/stores/fetchStatus'
+  import { storeToRefs } from 'pinia'
 
   const rules = yup.object({
     code: yup.string().required().length(4),
@@ -52,36 +48,26 @@
       .oneOf([yup.ref('code')], 'code do not match'),
   })
 
-  let loading = ref(false)
-  let errorText = ref('')
   let successText = ref('')
+  const { errorMessage } = storeToRefs(useFetchStore())
 
   const submit = async (values: { code: string }) => {
-    try {
-      loading.value = true
-      const { code } = values
+    const { code } = values
 
-      await apolloClient.mutate({
-        mutation: gql`
-          mutation updateSecurityCode($code: String!) {
-            updateSecurityCode(code: $code)
-          }
-        `,
-        variables: {
-          code,
-        },
-      })
+    successText.value = ''
 
-      errorText.value = ''
-      successText.value = '更新成功'
+    await apolloClient.mutate({
+      mutation: gql`
+        mutation updateSecurityCode($code: String!) {
+          updateSecurityCode(code: $code)
+        }
+      `,
+      variables: {
+        code,
+      },
+    })
 
-      loading.value = false
-    } catch (error) {
-      errorText.value = (<ApolloError>error).message
-      successText.value = ''
-
-      loading.value = false
-    }
+    successText.value = '更新成功'
   }
 </script>
 

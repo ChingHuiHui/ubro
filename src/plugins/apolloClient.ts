@@ -15,13 +15,26 @@ const errorHandler = onError(({ graphQLErrors }) => {
   }
 })
 
+let requests = 0
+
 const createFetcher = async (uri: string, options: object) => {
   useFetchStore().setErrorMessage('')
-  useFetchStore().setLoading(true)
+
+  requests++
+
+  if (requests === 1 && !useFetchStore().loading) {
+    useFetchStore().setLoading(true)
+  }
 
   const response = await fetch(uri, options)
 
-  useFetchStore().setLoading(false)
+  setTimeout(() => {
+    requests--
+
+    if (requests === 0 && useFetchStore().loading) {
+      useFetchStore().setLoading(false)
+    }
+  }, 300)
 
   return response
 }

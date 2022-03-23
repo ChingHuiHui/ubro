@@ -2,9 +2,7 @@
   <aside class="w-56 bg-primary-light">
     <nav class="h-full">
       <ul class="h-full p-10 flex flex-col items-center">
-        <li class="mb-5 logo">
-          <router-link :to="homePage" class="w-full h-full block" />
-        </li>
+        <li class="mb-5 logo" />
         <li v-for="{ label, to } in links" :key="label">
           <router-link :to="to">{{ label }}</router-link>
         </li>
@@ -14,7 +12,6 @@
           </router-link>
         </li>
         <li v-else>
-          <!-- TODO: for logout -->
           <button class="btn btn-primary w-40" @click="logout">完成</button>
         </li>
       </ul>
@@ -31,10 +28,6 @@
 
   const route = useRoute()
   const { isLogin, isAdmin } = storeToRefs(useAuthStore())
-
-  const homePage = computed(() => {
-    return isAdmin.value ? '/admin/products' : '/'
-  })
 
   const links = computed(() => {
     if (isAdmin.value && isLogin.value) {
