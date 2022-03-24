@@ -12,7 +12,9 @@
           </router-link>
         </li>
         <li v-else>
-          <button class="btn btn-primary w-40" @click="logout">完成</button>
+          <button class="btn btn-primary w-40" @click="logout">
+            {{ isAdminPage ? '登出' : '完成' }}
+          </button>
         </li>
       </ul>
     </nav>
@@ -26,37 +28,49 @@
   import { useAuthStore } from '@/stores/auth'
   import { useRouter, useRoute } from 'vue-router'
 
+  const { isLogin } = storeToRefs(useAuthStore())
+  const router = useRouter()
   const route = useRoute()
-  const { isLogin, isAdmin } = storeToRefs(useAuthStore())
+
+  const isAdminPage = computed(() => {
+    const routeName = route.name
+
+    if (!routeName) {
+      return false
+    }
+
+    return (<string>routeName).includes('admin')
+  })
 
   const links = computed(() => {
-    if (isAdmin.value && isLogin.value) {
+    if (!isLogin.value || route.name === 'home') {
+      return []
+    }
+
+    if (isAdminPage.value) {
       return [
         { label: '商品', to: '/admin/products' },
         { label: '修改安全碼', to: '/admin/code' },
       ]
     }
 
-    if (
-      !isAdmin.value &&
-      isLogin.value &&
-      !(route.name as string | undefined)?.includes('admin')
-    ) {
-      return [
-        { label: '集點卡', to: '/points' },
-        { label: '兌換', to: '/exchange' },
-        { label: '紀錄', to: '/records' },
-      ]
-    }
-
-    return []
+    return [
+      { label: '集點卡', to: '/points' },
+      { label: '兌換', to: '/exchange' },
+      { label: '紀錄', to: '/records' },
+    ]
   })
 
   const { authLogout } = useAuthStore()
-  const router = useRouter()
 
   const logout = async () => {
     await authLogout()
+
+    if (isAdminPage.value) {
+      await router.push('/admin/login')
+      return
+    }
+
     await router.push('/')
   }
 </script>
