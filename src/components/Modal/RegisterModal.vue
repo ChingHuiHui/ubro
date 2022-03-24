@@ -1,5 +1,5 @@
 <template>
-  <Modal title="新號碼，是否要註冊?" @close="emits('close')">
+  <Modal title="新號碼,是否要註冊?" @close="emits('close')">
     <div class="flex items-center space-x-4">
       <button class="btn btn-outline-primary btn-block" @click="emits('close')">
         取消

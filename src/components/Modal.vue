@@ -3,10 +3,10 @@
     class="fixed inset-0 z-40 bg-black bg-opacity-60 flex-center"
     @click.self="close"
   >
-    <div class="modal min-w-[300px] bg-white p-6 rounded-lg relative">
+    <div class="modal min-w-[300px] bg-white p-6 pt-10 rounded-lg relative">
       <HuiIcon
         icon="plus"
-        class="rotate-45 absolute right-6 top-6 cursor-pointer"
+        class="rotate-45 absolute right-3 top-3 cursor-pointer"
         @click="close"
       />
       <slot name="title">
