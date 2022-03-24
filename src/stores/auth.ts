@@ -105,8 +105,6 @@ export const useAuthStore = defineStore('auth', {
     async fetchMe(): Promise<void> {
       const user = await useFetchMe()
 
-      console.log('user', user)
-
       if (!user) {
         return
       }
