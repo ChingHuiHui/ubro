@@ -1,11 +1,6 @@
 <template>
   <div>
-    <PhonePad
-      v-if="!isLogin"
-      @submit="submit"
-      :phone="phone"
-      @input="handleInput"
-    />
+    <PhonePad @submit="submit" :phone="phone" @input="handleInput" />
     <RegisterModal
       v-if="modalIsOpen"
       @submit="register"

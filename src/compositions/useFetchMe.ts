@@ -12,6 +12,17 @@ export default async () => {
             phone
             point
             isAdmin
+            exchangeRecords {
+              id
+              point
+              productName
+              createdAt
+            }
+            consumeRecords {
+              id
+              point
+              createdAt
+            }
           }
         }
       `,

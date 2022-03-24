@@ -3,15 +3,32 @@ import useLogin, { LoginInput } from '@/compositions/useLogin'
 import useRegister from '@/compositions/useRegister'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
+type ExchangeProduct = {
+  id: number
+  point: number
+  productName: string
+  createdAt: Date
+}
+
+type ConsumeRecords = {
+  id: number
+  point: number
+  createdAt: Date
+}
+
 type User = {
   phone: string
   point: number
+  exchangeRecords: ExchangeProduct[]
+  consumeRecords: ConsumeRecords[]
   isAdmin: boolean
 }
 
 const defaultUserInfo = {
   phone: '',
   point: 0,
+  exchangeRecords: [],
+  consumeRecords: [],
   isAdmin: false,
 }
 
@@ -29,6 +46,12 @@ export const useAuthStore = defineStore('auth', {
     },
     point(): number {
       return this.user.point
+    },
+    exchangeRecords(): ExchangeProduct[] {
+      return this.user.exchangeRecords
+    },
+    consumeRecords(): ConsumeRecords[] {
+      return this.user.consumeRecords
     },
   },
   actions: {
@@ -81,6 +104,8 @@ export const useAuthStore = defineStore('auth', {
     },
     async fetchMe(): Promise<void> {
       const user = await useFetchMe()
+
+      console.log('user', user)
 
       if (!user) {
         return

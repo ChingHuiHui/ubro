@@ -45,6 +45,7 @@
       return [
         { label: '集點卡', to: '/points' },
         { label: '兌換', to: '/exchange' },
+        { label: '紀錄', to: '/records' },
       ]
     }
 

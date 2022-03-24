@@ -24,6 +24,8 @@ import Points from '@/pages/points.vue'
 import Exchange from '@/pages/exchange.vue'
 import AdminLogin from '@/pages/login.vue'
 import Code from '@/pages/code.vue'
+import UserRecords from '@/pages/records/get.vue'
+
 import Products from '@/pages/products/index.vue'
 import CreateProduct from '@/pages/products/create.vue'
 import UpdateProduct from '@/pages/products/update.vue'
@@ -66,6 +68,12 @@ const routes = [
     path: '/points',
     component: Points,
     name: 'user-points',
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/records',
+    component: UserRecords,
+    name: 'user-records',
     meta: { requiresAuth: true },
   },
   {
