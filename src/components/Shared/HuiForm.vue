@@ -19,7 +19,7 @@
     }
   )
 
-  const { handleSubmit, meta, values } = useForm({
+  const { handleSubmit, meta, values, resetForm } = useForm({
     initialValues: props.initialValues,
     validationSchema: props.rules,
   })
@@ -27,6 +27,8 @@
   const submit = handleSubmit(async () => {
     try {
       await props.action(values)
+
+      resetForm()
     } catch (e) {
       throw e
     }

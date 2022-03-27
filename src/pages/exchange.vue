@@ -12,7 +12,7 @@
       </div>
       <div class="flex-1 bg-white overflow-y-scroll rounded-t-2xl">
         <div
-          class="sticky top-0 bg-white px-6 py-3 shadow flex items-center justify-between"
+          class="sticky top-0 z-10 bg-white px-6 py-3 shadow flex items-center justify-between"
         >
           <div class="flex items-center space-x-4">
             <span>兌換</span>
@@ -49,7 +49,12 @@
         />
       </div>
     </div>
-    <ExchangeModal v-if="modalIsOpen" @close="modalIsOpen = false" />
+    <ExchangeModal
+      :product-id="active"
+      v-if="modalIsOpen"
+      @close="modalIsOpen = false"
+      @submit="resetChoose"
+    />
   </div>
 </template>
 
@@ -103,4 +108,8 @@
 
     return point.value - cost
   })
+
+  const resetChoose = (): void => {
+    active.value = null
+  }
 </script>

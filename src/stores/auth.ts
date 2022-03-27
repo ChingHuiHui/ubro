@@ -1,17 +1,34 @@
 import useFetchMe from '@/compositions/useFetchMe'
 import useLogin, { LoginInput } from '@/compositions/useLogin'
+import useRegister from '@/compositions/useRegister'
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { Ref } from 'vue'
+
+type ExchangeProduct = {
+  id: number
+  point: number
+  productName: string
+  createdAt: Date
+}
+
+type ConsumeRecords = {
+  id: number
+  point: number
+  createdAt: Date
+}
 
 type User = {
   phone: string
   point: number
+  exchangeRecords: ExchangeProduct[]
+  consumeRecords: ConsumeRecords[]
   isAdmin: boolean
 }
 
 const defaultUserInfo = {
   phone: '',
   point: 0,
+  exchangeRecords: [],
+  consumeRecords: [],
   isAdmin: false,
 }
 
@@ -30,14 +47,30 @@ export const useAuthStore = defineStore('auth', {
     point(): number {
       return this.user.point
     },
+    exchangeRecords(): ExchangeProduct[] {
+      return this.user.exchangeRecords
+    },
+    consumeRecords(): ConsumeRecords[] {
+      return this.user.consumeRecords
+    },
   },
   actions: {
     async authLogin({ phone, password }: LoginInput): Promise<void> {
       const { login } = useLogin({ phone, password })
 
-      const token = await login()
+      try {
+        const token = await login()
 
-      this.setToken(token)
+        this.setToken(token)
+      } catch (e) {
+        throw e
+      }
+    },
+    async authRegister({ phone }: { phone: string }): Promise<void> {
+      const { register } = useRegister(phone)
+
+      await register()
+      await this.authLogin({ phone, password: phone })
     },
     async adminLogin({ phone, password }: LoginInput): Promise<void> {
       const { adminLogin } = useLogin({ phone, password })

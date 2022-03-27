@@ -1,24 +1,24 @@
 <template>
-  <div
-    v-if="loading"
-    class="fixed inset-0 bg-black bg-opacity-60 flex-center text-white"
-  >
-    Loading ...
+  <div>
+    <PhonePad @submit="submit" :phone="phone" @input="handleInput" />
+    <RegisterModal
+      v-if="modalIsOpen"
+      @submit="register"
+      @close="modalIsOpen = false"
+    />
   </div>
-  <PhonePad
-    v-if="!authStore.isLogin"
-    @submit="submit"
-    :phone="phone"
-    @input="handleInput"
-  />
 </template>
 
 <script lang="ts" setup>
-  import { computed, onMounted, ref, watchEffect } from 'vue'
+  import { computed, ref, watchEffect } from 'vue'
 
-  import { useAuthStore } from '@/stores/auth'
   import { useRouter } from 'vue-router'
-  import useLogin from '@/compositions/useLogin'
+
+  import { storeToRefs } from 'pinia'
+  import { useAuthStore } from '@/stores/auth'
+  import { ApolloError } from '@apollo/client/errors'
+
+  import RegisterModal from '@/components/Modal/RegisterModal.vue'
   import PhonePad from '@/components/PhonePad.vue'
 
   const REMOVE_NUMBER = 10
@@ -26,6 +26,7 @@
   const LOGIN_NUMBER = 12
   const MAX_LENGTH = 10
 
+  const modalIsOpen = ref(false)
   const phone = ref('')
 
   const isValid = computed(() => {
@@ -58,21 +59,30 @@
   }
 
   const router = useRouter()
-  const authStore = useAuthStore()
+  const { isLogin } = storeToRefs(useAuthStore())
+  const { authLogin, authRegister } = useAuthStore()
 
   watchEffect(() => {
-    if (authStore.isLogin) {
+    if (isLogin.value) {
       router.push('/points')
     }
   })
 
-  let loading = ref(false)
+  const register = async () => {
+    modalIsOpen.value = false
+    await authRegister({ phone: phone.value })
+
+    alert('完成')
+  }
 
   const submit = async () => {
-    loading.value = true
-
-    await authStore.authLogin({ phone: phone.value, password: phone.value })
-
-    loading.value = false
+    try {
+      await authLogin({ phone: phone.value, password: phone.value })
+    } catch (error) {
+      if ((<ApolloError>error).message === 'this phone not register') {
+        modalIsOpen.value = true
+      }
+    } finally {
+    }
   }
 </script>

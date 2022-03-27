@@ -10,11 +10,36 @@
 </template>
 
 <script setup lang="ts">
+  import apolloClient from '@/plugins/apolloClient'
+  import gql from 'graphql-tag'
+
+  import { useAuthStore } from '@/stores/auth'
   import Modal from '@/components/Modal.vue'
 
-  const emits = defineEmits(['close'])
+  const props = defineProps<{ productId: number | null }>()
+  const emits = defineEmits(['close', 'submit'])
 
-  const submit = () => {
-    // TODO: sent api
+  const authStore = useAuthStore()
+
+  const submit = async () => {
+    try {
+      await apolloClient.mutate({
+        mutation: gql`
+          mutation exchange($productId: Int!) {
+            exchange(productId: $productId)
+          }
+        `,
+        variables: {
+          productId: props.productId,
+        },
+      })
+
+      await authStore.fetchMe()
+
+      emits('submit')
+      emits('close')
+    } catch (e) {
+      console.log(e)
+    }
   }
 </script>
