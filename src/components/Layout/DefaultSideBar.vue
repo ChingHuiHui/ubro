@@ -2,9 +2,7 @@
   <aside class="w-56 bg-primary-light">
     <nav class="h-full">
       <ul class="h-full p-10 flex flex-col items-center">
-        <li class="mb-5 logo">
-          <router-link :to="homePage" class="w-full h-full block" />
-        </li>
+        <li class="mb-5 logo" />
         <li v-for="{ label, to } in links" :key="label">
           <router-link :to="to">{{ label }}</router-link>
         </li>
@@ -14,8 +12,9 @@
           </router-link>
         </li>
         <li v-else>
-          <!-- TODO: for logout -->
-          <button class="btn btn-primary w-40" @click="logout">完成</button>
+          <button class="btn btn-primary w-40" @click="logout">
+            {{ isAdminPage ? '登出' : '完成' }}
+          </button>
         </li>
       </ul>
     </nav>
@@ -29,40 +28,49 @@
   import { useAuthStore } from '@/stores/auth'
   import { useRouter, useRoute } from 'vue-router'
 
+  const { isLogin } = storeToRefs(useAuthStore())
+  const router = useRouter()
   const route = useRoute()
-  const { isLogin, isAdmin } = storeToRefs(useAuthStore())
 
-  const homePage = computed(() => {
-    return isAdmin.value ? '/admin/products' : '/'
+  const isAdminPage = computed(() => {
+    const routeName = route.name
+
+    if (!routeName) {
+      return false
+    }
+
+    return (<string>routeName).includes('admin')
   })
 
   const links = computed(() => {
-    if (isAdmin.value && isLogin.value) {
+    if (!isLogin.value || route.name === 'home') {
+      return []
+    }
+
+    if (isAdminPage.value) {
       return [
         { label: '商品', to: '/admin/products' },
-        { label: '安全碼', to: '/admin/code' },
+        { label: '修改安全碼', to: '/admin/code' },
       ]
     }
 
-    if (
-      !isAdmin.value &&
-      isLogin.value &&
-      (route.name as string | undefined)?.includes('admin')
-    ) {
-      return [
-        { label: '集點卡', to: '/points' },
-        { label: '兌換', to: '/exchange' },
-      ]
-    }
-
-    return []
+    return [
+      { label: '集點卡', to: '/points' },
+      { label: '兌換', to: '/exchange' },
+      { label: '紀錄', to: '/records' },
+    ]
   })
 
   const { authLogout } = useAuthStore()
-  const router = useRouter()
 
   const logout = async () => {
     await authLogout()
+
+    if (isAdminPage.value) {
+      await router.push('/admin/login')
+      return
+    }
+
     await router.push('/')
   }
 </script>

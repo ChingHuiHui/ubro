@@ -1,15 +1,9 @@
-import { ref, Ref } from 'vue'
 import gql from 'graphql-tag'
-
-import useRegister from '@/compositions/useRegister'
 import apolloClient from '@/plugins/apolloClient'
-import type { ApolloError } from '@apollo/client/core'
 
 export type LoginInput = { phone: string; password: string }
 
 export default ({ phone, password }: LoginInput) => {
-  const { register } = useRegister(phone)
-
   const login = async (): Promise<string | undefined> => {
     try {
       const {
@@ -31,15 +25,7 @@ export default ({ phone, password }: LoginInput) => {
       })
 
       return login.token
-
-      // TODO: error's type
     } catch (error) {
-      if ((<ApolloError>error).message === 'this phone not register') {
-        await register()
-
-        return await login()
-      }
-
       throw error
     }
   }

@@ -1,12 +1,5 @@
 <template>
-  <ul class="product-table py-6">
-    <li class="product-row p-2 text-gray-800">
-      <div>
-        <span>兌換</span>
-        <span>品項</span>
-        <span>點數</span>
-      </div>
-    </li>
+  <List :fields="['兌換', '品項', '點數']">
     <li
       @click="emits('change', product.id)"
       v-for="product in products"
@@ -27,11 +20,12 @@
         <span>{{ product.point }}</span>
       </div>
     </li>
-  </ul>
+  </List>
 </template>
 
 <script lang="ts" setup>
   import HuiIcon from '@/components/HuiIcon.vue'
+  import List from './List.vue'
 
   type Product = {
     id: number
@@ -49,34 +43,30 @@
 </script>
 
 <style scoped>
-  .product-table {
-    @apply divide-y;
+  .product-table /deep/ .product-row {
+    &:first-child {
+      @apply top-[4.5rem];
+    }
 
-    .product-row {
-      @apply p-2 px-6 transitable;
+    .check {
+      @apply w-10 h-10 rounded-full border flex-center text-gray-300;
+    }
+
+    &.active {
+      @apply bg-primary-light text-white;
 
       .check {
-        @apply w-10 h-10 rounded-full border flex-center text-gray-300;
+        @apply text-white;
+      }
+    }
+
+    > div {
+      span {
+        @apply flex-1;
       }
 
-      &.active {
-        @apply bg-primary-light text-white;
-
-        .check {
-          @apply text-white;
-        }
-      }
-
-      > div {
-        @apply flex items-center;
-
-        span {
-          @apply flex-1;
-        }
-
-        span:nth-child(2) {
-          @apply flex-[2];
-        }
+      span:nth-child(2) {
+        @apply flex-[2];
       }
     }
   }

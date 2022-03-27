@@ -58,3 +58,15 @@ body {
     @apply border-primary;
   }
 }
+
+.product-table {
+  @apply divide-y;
+
+  .product-row {
+    @apply p-2 px-6 transitable;
+
+    > div {
+      @apply flex items-center;
+    }
+  }
+}

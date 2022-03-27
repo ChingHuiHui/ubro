@@ -19,10 +19,13 @@ import { zh, en } from '@/lang'
 import StoragePlugin from '@/plugins/storage'
 
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/pages/Home.vue'
-import Points from '@/pages/Points.vue'
-import Exchange from '@/pages/Exchange.vue'
-import AdminLogin from '@/pages/Admin/Login.vue'
+import Home from '@/pages/home.vue'
+import Points from '@/pages/points.vue'
+import Exchange from '@/pages/exchange.vue'
+import AdminLogin from '@/pages/login.vue'
+import Code from '@/pages/code.vue'
+import UserRecords from '@/pages/records/get.vue'
+
 import Products from '@/pages/products/index.vue'
 import CreateProduct from '@/pages/products/create.vue'
 import UpdateProduct from '@/pages/products/update.vue'
@@ -68,12 +71,19 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: '/records',
+    component: UserRecords,
+    name: 'user-records',
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/exchange',
     component: Exchange,
     name: 'user-exchange',
     meta: { requiresAuth: true },
   },
   { path: '/admin/login', name: 'admin-login', component: AdminLogin },
+  { path: '/admin/code', name: 'admin-code', component: Code },
   {
     path: '/admin/products',
     component: Products,
