@@ -11,9 +11,9 @@
         <HuiInput name="password" label="Password" type="password" />
         <div class="flex space-x-4">
           <button class="btn btn-outline-primary btn-block" type="button">
-            <router-link class="block" to="/">GoBack</router-link>
+            <router-link class="block" to="/">回使用者登入</router-link>
           </button>
-          <button class="btn btn-primary btn-block" type="submit">Login</button>
+          <button class="btn btn-primary btn-block" type="submit">登入</button>
         </div>
         <div class="mt-1 text-sm text-red-500">{{ errorText }}</div>
       </HuiForm>
