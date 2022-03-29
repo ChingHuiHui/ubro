@@ -8,7 +8,6 @@
     </div>
     <DefaultSideBar v-if="!isAdminLoginPage" />
     <main
-      v-else
       class="flex-1 pt-16 px-10 overflow-x-hidden relative"
       :class="{ 'bg-white': isAdminLoginPage }"
     >

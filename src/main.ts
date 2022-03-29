@@ -31,8 +31,6 @@ import Products from '@/pages/products/index.vue'
 import CreateProduct from '@/pages/products/create.vue'
 import UpdateProduct from '@/pages/products/update.vue'
 
-import Test from '@/pages/test.vue'
-
 import './assets/styles/index.css'
 
 const app = createApp({
@@ -115,10 +113,6 @@ const routes = [
     component: UpdateProduct,
     name: 'admin-products.update',
     meta: { requiresAdmin: true },
-  },
-  {
-    path: '/test',
-    component: Test,
   },
 ]
 
