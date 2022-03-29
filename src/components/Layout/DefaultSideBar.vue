@@ -51,6 +51,7 @@
       return [
         { label: '商品', to: '/admin/products' },
         { label: '修改安全碼', to: '/admin/code' },
+        { label: '紀錄', to: '/admin/records' },
       ]
     }
 

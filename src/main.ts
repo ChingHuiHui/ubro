@@ -26,6 +26,7 @@ import AdminLogin from '@/pages/login.vue'
 import Code from '@/pages/code.vue'
 import UserRecords from '@/pages/records/get.vue'
 
+import AdminRecords from '@/pages/records/all.vue'
 import Products from '@/pages/products/index.vue'
 import CreateProduct from '@/pages/products/create.vue'
 import UpdateProduct from '@/pages/products/update.vue'
@@ -83,7 +84,18 @@ const routes = [
     meta: { requiresAuth: true },
   },
   { path: '/admin/login', name: 'admin-login', component: AdminLogin },
-  { path: '/admin/code', name: 'admin-code', component: Code },
+  {
+    path: '/admin/code',
+    name: 'admin-code',
+    component: Code,
+    meta: { requiresAdmin: true },
+  },
+  {
+    path: '/admin/records',
+    component: AdminRecords,
+    name: 'admin-records',
+    meta: { requiresAdmin: true },
+  },
   {
     path: '/admin/products',
     component: Products,
