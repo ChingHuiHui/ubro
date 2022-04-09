@@ -10,6 +10,7 @@
         class="border px-2"
         maxlength="4"
         minlength="4"
+        autocomplete="off"
       />
     </div>
     <p class="text-red-500 text-sm mb-1">{{ errorMessage }}</p>
