@@ -1,11 +1,7 @@
 <template>
   <div>
     <PhonePad @submit="submit" :phone="phone" @input="handleInput" />
-    <RegisterModal
-      v-if="modalIsOpen"
-      @submit="register"
-      @close="modalIsOpen = false"
-    />
+    <RegisterModal v-if="modalIsOpen" @submit="register" @close="close" />
   </div>
 </template>
 
@@ -30,9 +26,10 @@
   const modalIsOpen = ref(false)
   const phone = ref('')
 
-  const isValid = computed(() => {
-    return /((?=(09))[0-9]{10})$/g.test(phone.value)
-  })
+  const close = () => {
+    modalIsOpen.value = false
+    phone.value = ''
+  }
 
   const handleInput = (number: number | string) => {
     let addNumber = String(number)
