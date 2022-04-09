@@ -20,6 +20,7 @@
 
   import RegisterModal from '@/components/Modal/RegisterModal.vue'
   import PhonePad from '@/components/PhonePad.vue'
+  import { ERROR_CODE } from '@/libs/enum'
 
   const REMOVE_NUMBER = 10
   const ZERO_NUMBER = 11
@@ -79,7 +80,7 @@
     try {
       await authLogin({ phone: phone.value, password: phone.value })
     } catch (error) {
-      if ((<ApolloError>error).message === 'this phone not register') {
+      if ((<ApolloError>error).message === ERROR_CODE.PHONE_NOT_REGISTER) {
         modalIsOpen.value = true
       }
     } finally {
