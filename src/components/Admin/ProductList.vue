@@ -9,7 +9,7 @@
     </li>
     <li v-for="product in products" :key="product.id" class="product-row">
       <div>
-        <span>{{ product.name }}</span>
+        <span class="truncate">{{ product.name }}</span>
         <span>{{ product.point }}</span>
         <div class="divide-x-2">
           <span class="px-2 cursor-pointer">
@@ -83,7 +83,7 @@
           @apply flex-1;
         }
 
-        span:nth-child(2) {
+        span:nth-child(1) {
           @apply flex-[2];
         }
       }

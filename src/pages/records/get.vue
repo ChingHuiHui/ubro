@@ -23,7 +23,7 @@
       >
         <div>
           <span>{{ i + 1 }}</span>
-          <span>{{ record.productName }}</span>
+          <span class="truncate">{{ record.productName }}</span>
           <span>{{ record.point }}</span>
           <span>{{ record.createdAt }}</span>
         </div>
@@ -91,8 +91,12 @@
       > div {
         @apply flex items-center;
 
-        span {
+        span:not(:nth-child(1)) {
           @apply flex-1;
+        }
+
+        span {
+          @apply w-10 !important;
         }
       }
     }
