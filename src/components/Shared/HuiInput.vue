@@ -11,6 +11,7 @@
       :placeholder="placeholder"
       :name="validationName"
       :value="value"
+      v-bind="$attrs"
       v-on="validationListeners"
     />
   </HuiField>
