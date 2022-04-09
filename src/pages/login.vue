@@ -22,7 +22,7 @@
         <div
           class="flex-1 relative text-primary text-[5rem] sm:text-[12.5rem] flex items-center"
         >
-          <span class="z-10">Ubro</span>
+          <span class="z-10">UBRO</span>
           <div class="logo" />
         </div>
       </div>
