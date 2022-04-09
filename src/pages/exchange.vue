@@ -14,10 +14,10 @@
         <div
           class="sticky top-0 z-10 bg-white px-6 py-3 shadow flex items-center justify-between"
         >
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-4 mr-2">
             <span>兌換</span>
             <span
-              class="border-b-2 border-b-primary pb-0.5 text-xl font-medium"
+              class="flex-1 truncate border-b-2 border-b-primary pb-0.5 text-xl font-medium"
             >
               {{ chosenProduct ? chosenProduct.name : '尚未兌換任何商品' }}
             </span>

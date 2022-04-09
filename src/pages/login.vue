@@ -15,14 +15,14 @@
           </button>
           <button class="btn btn-primary btn-block" type="submit">登入</button>
         </div>
-        <div class="mt-1 text-sm text-red-500">{{ errorText }}</div>
+        <div class="mt-1 text-sm text-red-500">{{ errorMessage }}</div>
       </HuiForm>
       <div class="row-start-1 flex flex-col lg:col-start-2 lg:-translate-y-1/2">
         <h2 class="h1">管理員登入</h2>
         <div
           class="flex-1 relative text-primary text-[5rem] sm:text-[12.5rem] flex items-center"
         >
-          <span class="z-10">Ubro</span>
+          <span class="z-10">UBRO</span>
           <div class="logo" />
         </div>
       </div>
@@ -37,8 +37,10 @@
   import HuiInput from '@/components/Shared/HuiInput.vue'
   import { useAuthStore } from '@/stores/auth'
   import { useRouter } from 'vue-router'
-  import { ref } from 'vue'
-  import { ApolloError } from '@apollo/client/core'
+  import { useFetchStore } from '@/stores/fetchStatus'
+  import { storeToRefs } from 'pinia'
+
+  const { errorMessage } = storeToRefs(useFetchStore())
 
   const rules = yup.object({
     phone: yup.string().required(),
@@ -48,23 +50,15 @@
   const { adminLogin } = useAuthStore()
   const router = useRouter()
 
-  let errorText = ref('')
-
   const submit = async (values: { phone: string; password: string }) => {
-    try {
-      const { phone, password } = values
+    const { phone, password } = values
 
-      await adminLogin({
-        phone: phone,
-        password: password,
-      })
+    await adminLogin({
+      phone: phone,
+      password: password,
+    })
 
-      errorText.value = ''
-
-      router.push({ name: 'admin-products.index' })
-    } catch (error) {
-      errorText.value = (<ApolloError>error).message
-    }
+    router.push({ name: 'admin-products.index' })
   }
 </script>
 

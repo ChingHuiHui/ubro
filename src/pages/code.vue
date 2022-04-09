@@ -7,11 +7,19 @@
         :action="submit"
         class="w-64 space-y-6"
       >
-        <HuiInput name="code" label="安全碼" type="password" />
+        <HuiInput
+          minlength="4"
+          maxlength="4"
+          name="code"
+          label="安全碼"
+          type="password"
+        />
         <HuiInput
           name="codeConfirmation"
           label="請再輸入一次"
           type="password"
+          minlength="4"
+          maxlength="4"
         />
         <button
           :disabled="invalid"
@@ -29,7 +37,6 @@
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { ApolloError } from '@apollo/client/core'
 
   import apolloClient from '@/plugins/apolloClient'
   import gql from 'graphql-tag'

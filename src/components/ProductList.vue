@@ -1,5 +1,5 @@
 <template>
-  <List :fields="['兌換', '品項', '點數']">
+  <List :fields="['兌換', '點數', '品項']">
     <li
       @click="emits('change', product.id)"
       v-for="product in products"
@@ -16,8 +16,8 @@
             <HuiIcon icon="check" />
           </div>
         </span>
-        <span>{{ product.name }}</span>
         <span>{{ product.point }}</span>
+        <span class="truncate">{{ product.name }}</span>
       </div>
     </li>
   </List>
@@ -65,7 +65,7 @@
         @apply flex-1;
       }
 
-      span:nth-child(2) {
+      span:nth-child(3) {
         @apply flex-[2];
       }
     }

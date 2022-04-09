@@ -1,11 +1,7 @@
 <template>
   <div>
     <PhonePad @submit="submit" :phone="phone" @input="handleInput" />
-    <RegisterModal
-      v-if="modalIsOpen"
-      @submit="register"
-      @close="modalIsOpen = false"
-    />
+    <RegisterModal v-if="modalIsOpen" @submit="register" @close="close" />
   </div>
 </template>
 
@@ -20,6 +16,7 @@
 
   import RegisterModal from '@/components/Modal/RegisterModal.vue'
   import PhonePad from '@/components/PhonePad.vue'
+  import { ERROR_CODE } from '@/libs/enum'
 
   const REMOVE_NUMBER = 10
   const ZERO_NUMBER = 11
@@ -29,9 +26,10 @@
   const modalIsOpen = ref(false)
   const phone = ref('')
 
-  const isValid = computed(() => {
-    return /((?=(09))[0-9]{10})$/g.test(phone.value)
-  })
+  const close = () => {
+    modalIsOpen.value = false
+    phone.value = ''
+  }
 
   const handleInput = (number: number | string) => {
     let addNumber = String(number)
@@ -79,7 +77,7 @@
     try {
       await authLogin({ phone: phone.value, password: phone.value })
     } catch (error) {
-      if ((<ApolloError>error).message === 'this phone not register') {
+      if ((<ApolloError>error).message === ERROR_CODE.PHONE_NOT_REGISTER) {
         modalIsOpen.value = true
       }
     } finally {
