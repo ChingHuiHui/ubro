@@ -11,6 +11,12 @@
       class="flex-1 pt-16 px-10 overflow-x-hidden relative"
       :class="{ 'bg-white': isAdminLoginPage }"
     >
+      <div
+        v-if="authStore.isLogin && !authStore.isAdmin"
+        class="fixed top-4 right-0 px-2 pr-3 rounded-l-lg text-2xl bg-gray-500 text-white"
+      >
+        {{ phone }}
+      </div>
       <router-view />
     </main>
   </div>
@@ -26,6 +32,7 @@
   import { useFetchStore } from './stores/fetchStatus'
 
   const { loading } = storeToRefs(useFetchStore())
+  const { phone } = storeToRefs(useAuthStore())
 
   const route = useRoute()
   const router = useRouter()

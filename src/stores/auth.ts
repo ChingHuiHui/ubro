@@ -44,6 +44,9 @@ export const useAuthStore = defineStore('auth', {
     isAdmin(): boolean {
       return this.user.isAdmin
     },
+    phone(): string {
+      return this.user.phone
+    },
     point(): number {
       return this.user.point
     },
