@@ -1,4 +1,4 @@
-From quay.io/raylin9981/ubro:build
+FROM quay.io/raylin9981/ubro:build
 COPY ./ /app
 WORKDIR /app
 RUN yarn install && yarn build
