@@ -6,7 +6,7 @@
     >
       Loading ...
     </div>
-    <DefaultSideBar v-if="!isAdminLoginPage" />
+    <DefaultSideBar v-if="!isAdminLoginPage && route.name !== 'verify'" />
     <main
       class="flex-1 pt-16 px-10 overflow-x-hidden relative"
       :class="{ 'bg-white': isAdminLoginPage }"
@@ -27,9 +27,11 @@
   import { computed } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
 
-  import DefaultSideBar from './components/Layout/DefaultSideBar.vue'
-  import { useAuthStore } from './stores/auth'
-  import { useFetchStore } from './stores/fetchStatus'
+  import DefaultSideBar from '@/components/Layout/DefaultSideBar.vue'
+  import { useAuthStore } from '@/stores/auth'
+  import { useFetchStore } from '@/stores/fetchStatus'
+  import useVerify from '@/compositions/useVerify'
+  import { ROUTE_NAME } from '@/libs/enum'
 
   const { loading } = storeToRefs(useFetchStore())
   const { phone } = storeToRefs(useAuthStore())
@@ -41,7 +43,23 @@
 
   const isAdminLoginPage = computed(() => route.name === 'admin-login')
 
+  const { isVerify, saveIntendedPage } = useVerify()
+
   router.beforeEach(async (to) => {
+    if (to.name === ROUTE_NAME.VERIFY) {
+      return
+    }
+
+    if (!isVerify.value) {
+      const intendedPage = to.name
+
+      saveIntendedPage(intendedPage)
+
+      return {
+        name: ROUTE_NAME.VERIFY,
+      }
+    }
+
     const token = await localStorage.getItem('token')
 
     if (token) {
@@ -55,18 +73,18 @@
       await authStore.removeToken()
 
       return {
-        name: 'home',
+        name: ROUTE_NAME.HOME,
       }
     }
 
     if (to.meta.requiresAdmin && !authStore.isAdmin) {
       return {
-        name: 'admin-login',
+        name: ROUTE_NAME.ADMIN_LOGIN,
       }
     }
 
     if (to.meta.requiresAuth && !authStore.isLogin) {
-      return { name: 'home' }
+      return { name: ROUTE_NAME.HOME }
     }
   })
 
