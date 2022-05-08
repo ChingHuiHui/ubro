@@ -1,26 +1,7 @@
 <template>
   <Modal :title="title" @close="emits('close')">
-    <div class="flex items-center space-x-4 mb-4">
-      <label for="code">安全碼</label>
-      <input
-        v-model="code"
-        placeholder="請輸入安全碼"
-        name="code"
-        type="password"
-        class="border px-2"
-        maxlength="4"
-        minlength="4"
-        autocomplete="off"
-      />
-    </div>
     <p class="text-red-500 text-sm mb-1">{{ errorMessage }}</p>
-    <button
-      :disabled="code.length < 4"
-      class="btn btn-primary btn-block"
-      @click="submit"
-    >
-      確認新增
-    </button>
+    <button class="btn btn-primary btn-block" @click="submit">確認新增</button>
   </Modal>
 </template>
 
@@ -57,7 +38,6 @@
         variables: {
           input: {
             point: Number(props.number),
-            securityCode: code.value,
           },
         },
       })

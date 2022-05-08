@@ -8,3 +8,9 @@ export enum ERROR_CODE {
   PASSWORD_ERROR = 'PASSWORD_ERROR',
   PHONE_NOT_REGISTER = 'PHONE_NOT_REGISTER',
 }
+
+export enum ROUTE_NAME {
+  HOME = 'home',
+  VERIFY = 'verify',
+  ADMIN_LOGIN = 'admin-login',
+}

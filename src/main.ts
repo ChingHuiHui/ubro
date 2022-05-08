@@ -20,6 +20,7 @@ import StoragePlugin from '@/plugins/storage'
 
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/pages/home.vue'
+import Verify from '@/pages/verify.vue'
 import Points from '@/pages/points.vue'
 import Exchange from '@/pages/exchange.vue'
 import AdminLogin from '@/pages/login.vue'
@@ -65,6 +66,7 @@ const i18n = createI18n({
 
 const routes = [
   { path: '/', component: Home, name: 'home' },
+  { path: '/verify', component: Verify, name: 'verify' },
   {
     path: '/points',
     component: Points,
