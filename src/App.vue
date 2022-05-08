@@ -46,20 +46,6 @@
   const { isVerify, saveIntendedPage } = useVerify()
 
   router.beforeEach(async (to) => {
-    if (to.name === ROUTE_NAME.VERIFY) {
-      return
-    }
-
-    if (!isVerify.value) {
-      const intendedPage = to.name
-
-      saveIntendedPage(intendedPage)
-
-      return {
-        name: ROUTE_NAME.VERIFY,
-      }
-    }
-
     const token = await localStorage.getItem('token')
 
     if (token) {
@@ -74,6 +60,20 @@
 
       return {
         name: ROUTE_NAME.HOME,
+      }
+    }
+
+    if (to.name === ROUTE_NAME.VERIFY) {
+      return
+    }
+
+    if (!isVerify.value) {
+      const intendedPage = to.name
+
+      saveIntendedPage(intendedPage)
+
+      return {
+        name: ROUTE_NAME.VERIFY,
       }
     }
 
